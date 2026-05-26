@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
+import { API_BASE_URL } from '../config';
 
 export default function AdminDashboard() {
   const { loggedIn, role, name } = useContext(AppContext);
@@ -34,7 +35,7 @@ export default function AdminDashboard() {
   // Fetch API lists
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5500/api/products');
+      const res = await fetch(`${API_BASE_URL}/api/products`);
       const data = await res.json();
       if (data.success) {
         setProducts(data.products || []);
@@ -46,7 +47,7 @@ export default function AdminDashboard() {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:5500/api/orders?seller_name=${encodeURIComponent(name || "")}`);
+      const res = await fetch(`${API_BASE_URL}/api/orders?seller_name=${encodeURIComponent(name || "")}`);
       const data = await res.json();
       if (data.success) {
         setOrders(data.orders || []);
@@ -71,7 +72,7 @@ export default function AdminDashboard() {
     }
 
     try {
-      const res = await fetch('http://127.0.0.1:5500/api/products', {
+      const res = await fetch(`${API_BASE_URL}/api/products`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -101,7 +102,7 @@ export default function AdminDashboard() {
   const handleRemoveProduct = async (id) => {
     if (window.confirm('Are you sure you want to remove this product?')) {
       try {
-        const res = await fetch(`http://127.0.0.1:5500/api/products/${id}`, { method: 'DELETE' });
+        const res = await fetch(`${API_BASE_URL}/api/products/${id}`, { method: 'DELETE' });
         const data = await res.json();
         if (data.success) {
           fetchProducts();

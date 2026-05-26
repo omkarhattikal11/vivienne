@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
+import { API_BASE_URL } from '../config';
 
 export default function Login() {
   const { loggedIn, login } = useContext(AppContext);
@@ -86,7 +87,7 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:5500/register", {
+      const response = await fetch(`${API_BASE_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -115,7 +116,7 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:5500/login", {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 
 export const AppContext = createContext();
 
@@ -102,7 +103,7 @@ export const AppProvider = ({ children }) => {
       let amountStr = orderItem.price.replace(/[^0-9]/g, '');
       let amount = parseInt(amountStr) || 0;
       
-      const response = await fetch("http://127.0.0.1:5500/api/orders", {
+      const response = await fetch(`${API_BASE_URL}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
