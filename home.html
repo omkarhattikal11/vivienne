@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VIVIENNE</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background: url("images/bg_pattern.png") repeat;
+background-size: 800px auto;
+animation: slideBg 60s linear infinite;
+}
+
+@keyframes slideBg {
+  0% { background-position: 0 0; }
+  100% { background-position: -800px -800px; }
+}
+
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(10px);
+position:sticky;
+top:0;
+z-index:1000;
+border-bottom: 1px solid rgba(0,0,0,0.05);
+box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:32px;
+font-weight:bold;
+color:#8b6837;
+cursor:pointer;
+}
+
+.logo img {
+width: 40px;
+height: 40px;
+object-fit: contain;
+border-radius: 5px;
+}
+
+.search-box{
+position:relative;
+display:flex;
+align-items:center;
+}
+
+.search-box input{
+width:320px;
+padding:12px 45px 12px 22px;
+border:1px solid #eaeaea;
+outline:none;
+border-radius:35px;
+background:#fcfcfc;
+font-size:15px;
+color:#3e2f1c;
+box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+transition:all 0.3s ease;
+}
+
+.search-box input:focus{
+width:340px;
+background: white;
+border-color: #d2b48c;
+box-shadow: 0 6px 18px rgba(139, 104, 55, 0.08);
+}
+
+.search-box button{
+position:absolute;
+right:15px;
+background:transparent;
+border:none;
+font-size:18px;
+cursor:pointer;
+transition: transform 0.2s ease;
+}
+
+.search-box button:hover{
+transform: scale(1.15);
+}
+
+#suggestions {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 300px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    max-height: 280px;
+    overflow-y: auto;
+    z-index: 1001;
+    display: none;
+    overflow: hidden;
+}
+
+.suggestion-item {
+    padding: 14px 22px;
+    cursor: pointer;
+    border-bottom: 1px solid #f2ece4;
+    font-size: 15px;
+    color: #444;
+    transition: 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: #fdfbf7;
+    color: #8b6837;
+    font-weight: bold;
+    padding-left: 28px;
+}
+
+.search-box input::placeholder{
+color:#9b8a73;
+}
+
+.right-nav{
+display:flex;
+gap:8px;
+align-items:center;
+}
+
+#username {
+  font-size: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, #9a7440, #8b6837);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(139, 104, 55, 0.2);
+  margin-left: 5px;
+}
+
+.nav-btn{
+  background: transparent;
+  color: #4a3b2c;
+  border: none;
+  width: 110px;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.4s ease, transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.nav-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #fdfbf7;
+  border-radius: 12px;
+  z-index: -2;
+  box-sizing: border-box;
+  border: 1.5px solid #eaddcc;
+  transition: all 0.3s ease;
+}
+
+.nav-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 0%;
+  background: linear-gradient(to top, #9a7440, #8b6837);
+  z-index: -1;
+  transition: height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 12px;
+}
+
+.nav-btn:hover {
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(139, 104, 55, 0.2);
+}
+
+.nav-btn:hover::before {
+  border-color: #8b6837;
+}
+
+.nav-btn:hover::after {
+  height: 100%;
+}
+
+/* HERO */
+
+.hero{
+height:65vh;
+background:
+linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),
+url("images/hero_bg.png");
+
+background-size:cover;
+background-position:center;
+
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+}
+
+.hero h1{
+font-size:70px;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:24px;
+}
+
+/* MENU */
+
+.menu{
+display:flex;
+gap:15px;
+padding:30px 40px;
+background:rgba(255, 255, 255, 0.45);
+backdrop-filter: blur(6px);
+border-bottom: 1px solid rgba(242, 236, 228, 0.5);
+}
+
+.menu button{
+padding:12px 30px;
+background:#fdfbf7;
+color:#666;
+border:1px solid #eaddcc;
+border-radius:40px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.menu button:hover{
+background:white;
+color:#8b6837;
+border-color:#8b6837;
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(139, 104, 55, 0.15);
+}
+
+.menu button.active-menu{
+background: linear-gradient(135deg, #9a7440, #8b6837);
+color:white;
+border:1px solid transparent;
+box-shadow: 0 8px 20px rgba(139, 104, 55, 0.35);
+transform: translateY(-2px);
+}
+
+.gender{
+display:flex;
+justify-content:center;
+gap:12px;
+padding:20px;
+background:rgba(255, 255, 255, 0.35);
+backdrop-filter: blur(6px);
+border-bottom: 1px solid rgba(249, 245, 240, 0.5);
+}
+
+.gender button{
+padding:10px 28px;
+border:none;
+border-radius:8px;
+background:transparent;
+color:#888;
+font-size:15px;
+font-weight:600;
+letter-spacing:0.5px;
+cursor:pointer;
+transition:all 0.3s ease;
+border-bottom:2px solid transparent;
+}
+
+.gender button:hover{
+color:#333;
+background:#fdfbf7;
+}
+
+.gender button.active{
+color:#8b6837;
+border-bottom:2px solid #8b6837;
+background:transparent;
+}
+
+/* CATEGORY */
+
+.category-scroll{
+display:flex;
+overflow-x:auto;
+gap:40px;
+padding:40px 30px;
+background:rgba(252, 250, 248, 0.4);
+backdrop-filter: blur(6px);
+}
+
+.category-scroll::-webkit-scrollbar{
+display:none;
+}
+
+.category{
+min-width:100px;
+text-align:center;
+cursor:pointer;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category:hover{
+transform: translateY(-10px);
+}
+
+.category img{
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+padding:4px;
+background: linear-gradient(45deg, #e3c498, #fff, #9a7440);
+box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+transition: all 0.4s ease;
+}
+
+.category:hover img{
+box-shadow: 0 15px 35px rgba(139, 104, 55, 0.3);
+transform: scale(1.05) rotate(3deg);
+}
+
+.category p{
+margin-top:18px;
+font-weight:700;
+font-size:14px;
+color:#333;
+letter-spacing:0.3px;
+transition: color 0.3s ease;
+}
+
+.category:hover p{
+color: #8b6837;
+}
+
+/* PRODUCTS */
+
+.subcategory-scroll{
+display:flex;
+overflow-x:auto;
+gap:20px;
+padding:20px;
+background:#f5efe6;
+}
+
+.subcategory-scroll::-webkit-scrollbar{
+display:none;
+}
+
+.sub-card{
+min-width:220px;
+background:white;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+cursor:pointer;
+}
+
+.sub-card img{
+width:100%;
+height:260px;
+object-fit:cover;
+}
+
+.sub-card h4{
+padding:14px;
+text-align:center;
+font-size:19px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:38px;
+}
+
+.search-box input{
+width:180px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+<div class="logo" onclick="window.location.href='home.html'">
+<img src="images/logo.png" alt="Vivienne Logo">
+VIVIENNE
+</div>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search rentals..."
+onkeyup="showSuggestions()"
+onkeypress="handleSearch(event)"
+autocomplete="off">
+
+<button onclick="searchNow()">
+🔍
+</button>
+
+<div id="suggestions"></div>
+
+</div>
+<div class="right-nav">
+
+<button onclick="openCart()" class="nav-btn">
+🛒 Cart
+</button>
+
+ <button onclick="openWishlist()"  class="nav-btn">
+♡ Wishlist
+</button>
+
+<button class="nav-btn" id="sellerBtn" onclick="window.location.href='login.html?type=seller'">
+Seller
+</button>
+
+<button class="nav-btn" onclick="logout()">
+Logout
+</button>
+
+<h3 id="username">
+Hi User
+</h3>
+
+</div>
+
+<!-- HAMBURGER MENU (MERGED FROM VERSION 2) -->
+<div style="position:relative;">
+
+<div onclick="toggleMenu()"
+style="
+font-size:26px;
+cursor:pointer;
+padding:8px 12px;
+color:#333;
+transition:transform 0.2s ease;"
+onmouseover="this.style.transform='scale(1.1)'"
+onmouseout="this.style.transform='scale(1)'">
+
+☰
+
+</div>
+
+<div id="menuBox"
+style="
+display:none;
+position:absolute;
+right:0;
+top:45px;
+background:white;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.15);
+overflow:hidden;
+min-width:180px;
+z-index:100;">
+
+<div onclick="openOrders()"
+style="
+padding:16px 20px;
+cursor:pointer;
+color:#444;
+font-weight:600;
+font-size:15px;
+transition:background 0.2s ease;"
+onmouseover="this.style.background='#fdfbf7'; this.style.color='#8b6837'"
+onmouseout="this.style.background='white'; this.style.color='#444'">
+
+📦 Your Orders
+
+</div>
+
+</div>
+
+</div>
+<!-- END OF HAMBURGER MENU -->
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+<div>
+
+<h1>
+Rentals & Elegant Celebrations
+</h1>
+
+<p>
+Curated experiences for your special moments
+</p>
+
+</div>
+
+</div>
+
+<!-- MENU -->
+
+<div class="menu">
+
+<button id="menuProducts" class="active-menu" onclick="showProducts(this)">
+Products
+</button>
+
+<button id="menuServices" onclick="showServices(this)">
+Services
+</button>
+
+<button id="menuHalls" onclick="showHalls(this)">
+Hall Bookings
+</button>
+
+</div>
+
+<!-- GENDER -->
+
+<div class="gender">
+
+<button class="active"
+onclick="loadGender('all',this)">
+All
+</button>
+
+<button onclick="loadGender('women',this)">
+Women
+</button>
+
+<button onclick="loadGender('men',this)">
+Men
+</button>
+
+<button onclick="loadGender('kids',this)">
+Kids
+</button>
+
+</div>
+
+<!-- CATEGORIES -->
+
+<div class="category-scroll"
+id="categories">
+
+</div>
+
+<!-- PRODUCTS -->
+
+<div class="subcategory-scroll"
+id="types">
+
+</div>
+
+<script>
+
+/* USER */
+
+let username =
+localStorage.getItem("name");
+
+if(username){
+
+document.getElementById("username")
+.innerText = "Hi " + username;
+
+}
+
+let role = localStorage.getItem("role");
+if(role === 'seller') {
+    let sBtn = document.getElementById("sellerBtn");
+    if(sBtn) {
+        sBtn.innerText = "Seller Dashboard";
+        sBtn.onclick = () => window.location.href='admin.html';
+    }
+}
+
+/* LOGOUT */
+
+function logout(){
+
+localStorage.removeItem("loggedIn");
+
+window.location.href = "login.html";
+
+}
+
+/* CATEGORIES */
+
+const categories = {
+
+women:[
+
+"Ethnic Sarees",
+"Lehengas",
+"Dresses",
+"Kurtis",
+"Western Party Dresses",
+"Costumes",
+"Jewellery"
+
+],
+
+men:[
+
+"Sherwani",
+"Kurta Pajama",
+"Indo-Western Sets",
+"Formal & Party",
+"Dance Costume Rental",
+"Fancy Dress Rental",
+"Accessories Rental"
+
+],
+
+kids:[
+
+"Kids Lehenga",
+"Mini Sherwani",
+"Kids Kurta Sets",
+"Kids Party Wear",
+"Kids Fancy Dress",
+"Kids Dance Costume",
+"Kids Accessories"
+
+],
+
+all:[
+
+"Ethnic Sarees",
+"Lehengas",
+"Dresses",
+"Kurtis",
+"Western Party Dresses",
+"Costumes",
+"Jewellery",
+
+"Sherwani",
+"Kurta Pajama",
+"Indo-Western Sets",
+"Formal & Party",
+"Dance Costume Rental",
+"Fancy Dress Rental",
+"Accessories Rental",
+
+"Kids Lehenga",
+"Mini Sherwani",
+"Kids Kurta Sets",
+"Kids Party Wear",
+"Kids Fancy Dress",
+"Kids Dance Costume",
+"Kids Accessories"
+
+]
+
+};
+
+/* CATEGORY IMAGES (MERGED FROM VERSION 1) */
+
+const categoryImages={
+
+"Ethnic Sarees":"https://i.pinimg.com/736x/ef/94/6d/ef946dba46345d75a7e1c85409e62cce.jpg",
+"Lehengas":"https://i.pinimg.com/1200x/6b/36/ee/6b36eeaaf9e3ed6493547440ca2932ca.jpg",
+"Dresses":"https://i.pinimg.com/736x/80/09/2a/80092a3e430a331fadf7ecea6389e8d5.jpg",
+"Kurtis":"https://i.pinimg.com/736x/36/1c/04/361c04217b4df6cc2e96a4b80606f250.jpg",
+"Western Party Dresses":"https://i.pinimg.com/1200x/5d/99/90/5d99908d189cd9bbeff3ad0e95b8a934.jpg",
+"Costumes":"https://i.pinimg.com/1200x/24/66/6e/24666e22756b566e0b0e7fb6b42a17a1.jpg",
+"Jewellery":"https://i.pinimg.com/736x/65/bd/3f/65bd3f4a37e9bbb8b8e53f26c9323cb6.jpg",
+
+"Sherwani":"https://i.pinimg.com/736x/75/ab/e6/75abe608f62d47ff2d39e45ca0f03afc.jpg",
+"Kurta Pajama":"https://manyavar.scene7.com/is/image/manyavar/SKS0744-304-Fawn-101_18-11-2025-08-44:894x1263?&dpr=on,2",
+"Indo-Western Sets":"https://i.pinimg.com/736x/2c/f2/09/2cf2091b6b0a327c61d924aba4422361.jpg",
+"Formal & Party":"https://i.pinimg.com/736x/fc/09/4d/fc094d594c2d2f93dcda72a6b53ed6f2.jpg",
+"Dance Costume Rental":"https://i.pinimg.com/736x/ec/74/5f/ec745f1fa9fc78eb623df40540652191.jpg",
+"Fancy Dress Rental":"https://i.pinimg.com/1200x/be/b6/27/beb627d1e055bf94e652fd570412f44a.jpg",
+"Accessories Rental":"https://i.pinimg.com/736x/66/5d/6b/665d6b61a1276723092e09a83208e027.jpg",
+
+"Kids Lehenga":"https://i.pinimg.com/736x/6c/7f/59/6c7f597ff6a5159ccc0bb3e9c7200578.jpg",
+"Mini Sherwani":"https://i.pinimg.com/1200x/07/03/f6/0703f625388dc3f2b157bfaf29014b8f.jpg",
+"Kids Kurta Sets":"https://i.pinimg.com/736x/30/c8/f2/30c8f25146182950a3a7ac211d9c0910.jpg",
+"Kids Party Wear":"https://i.pinimg.com/736x/e4/ea/40/e4ea402d9eec1b949aabf25b820b9e60.jpg",
+"Kids Fancy Dress":"https://i.pinimg.com/736x/77/ac/46/77ac46098c2fa055d384410783116ba4.jpg",
+"Kids Dance Costume":"https://i.pinimg.com/736x/29/f1/02/29f1023acca2dfdd3b0870a71a57adc5.jpg",
+"Kids Accessories":"https://i.pinimg.com/736x/98/e4/2e/98e42ed47a3c193e588ef5a0dfff8361.jpg"
+
+};
+
+const serviceImages = {
+  "Makeup/Styling": "https://i.pinimg.com/1200x/d7/fd/b9/d7fdb98546ebc5cd304fd1dcbe05b904.jpg",
+  "Mehendi": "https://i.pinimg.com/736x/07/77/00/077700a3aa7cd8a64a75c8dc8d488912.jpg",
+  "Nail Art": "https://i.pinimg.com/236x/44/29/8b/44298b6d7f9e875a499626d357d55dc1.jpg",
+  "Photoshoot": "https://i.pinimg.com/736x/90/42/f2/9042f27f7c56329be3235b8b25e5fd79.jpg",
+
+  "Bridal Makeup": "https://i.pinimg.com/1200x/d7/fd/b9/d7fdb98546ebc5cd304fd1dcbe05b904.jpg",
+  "Party Makeup": "https://i.pinimg.com/736x/47/45/5d/47455d3c23cd992cb50ec6c8da22a56b.jpg",
+  "Hair Styling": "https://i.pinimg.com/736x/d6/8c/d0/d68cd0e70b4af2f1949d294dd2252981.jpg",
+  "Saree Draping": "https://i.pinimg.com/736x/a7/12/c1/a712c1e96503d0213099c06396cdf9c3.jpg",
+
+  "Bridal Mehendi": "https://i.pinimg.com/736x/07/77/00/077700a3aa7cd8a64a75c8dc8d488912.jpg",
+  "Arabic Mehendi": "https://i.pinimg.com/1200x/38/b1/df/38b1df903853095be62f26c3ccffe6ea.jpg",
+  "Simple Mehendi": "https://i.pinimg.com/736x/b0/8e/ed/b08eeddfe85ce1ad661bafc29272652f.jpg",
+  "Designer Mehendi": "https://i.pinimg.com/736x/5f/5b/6b/5f5b6b438132dea924bf0422b77abbb5.jpg",
+
+  "French Nail Art": "https://i.pinimg.com/236x/44/29/8b/44298b6d7f9e875a499626d357d55dc1.jpg",
+  "Bridal Nail Art": "https://i.pinimg.com/1200x/7e/f6/87/7ef687103a7b4cf65d914887e41e6547.jpg",
+  "Glitter Nail Art": "https://i.pinimg.com/736x/7a/6a/8e/7a6a8edd67be7054cb0ccb45a6d7f7f8.jpg",
+
+  "Pre Wedding Shoot": "https://i.pinimg.com/736x/90/42/f2/9042f27f7c56329be3235b8b25e5fd79.jpg",
+  "Maternity Shoot": "https://i.pinimg.com/1200x/53/98/df/5398df5b52ca1be443fb92356c74dfcf.jpg",
+  "Baby Shoot": "https://i.pinimg.com/736x/73/c2/16/73c2160631ec1ae914f8460ba9f0b890.jpg",
+  "Fashion Shoot": "https://i.pinimg.com/1200x/98/7f/4e/987f4eb571663a42003451a9da4ce613.jpg"
+};
+
+const hallImages = {
+  "Wedding Hall": "https://i.pinimg.com/736x/bf/05/93/bf05936ad7de5e817a0beebfb13b2980.jpg",
+  "Birthday Hall": "https://i.pinimg.com/1200x/95/e3/b7/95e3b718c171eceeef00588332a8adce.jpg",
+  "Rooftop Hall": "https://i.pinimg.com/736x/d4/55/4f/d4554f46a4ed23e97f54d7ea4f29489a.jpg",
+
+  "Grand Wedding Hall": "https://i.pinimg.com/736x/bf/05/93/bf05936ad7de5e817a0beebfb13b2980.jpg",
+  "Luxury Palace Hall": "https://i.pinimg.com/736x/22/8c/9e/228c9e21c506b8dfe2deaa64585eefe1.jpg",
+  "Royal Marriage Hall": "https://i.pinimg.com/736x/3d/6b/5e/3d6b5e0409a5b9cb6d4d199850a070e1.jpg",
+
+  "Kids Birthday Hall": "https://i.pinimg.com/1200x/95/e3/b7/95e3b718c171eceeef00588332a8adce.jpg",
+  "Theme Birthday Hall": "https://i.pinimg.com/1200x/6b/6e/d9/6b6ed9964081b644351418d9edb9f9cf.jpg",
+  "Balloon Decor Hall": "https://i.pinimg.com/1200x/38/e3/bc/38e3bc0ce39aa1a45fee15a82ec1624f.jpg",
+
+  "Open Rooftop Hall": "https://i.pinimg.com/736x/d4/55/4f/d4554f46a4ed23e97f54d7ea4f29489a.jpg",
+  "Luxury Rooftop Lounge": "https://thumbs.dreamstime.com/b/romantic-roof-wedding-decoration-rooftop-setup-beautifully-decorated-mandap-adorned-greenery-lit-candles-set-against-405046781.jpg",
+  "Skyline Rooftop Venue": "https://i.pinimg.com/736x/b4/35/a0/b435a00f8635f39367187809cfefbeae.jpg"
+};
+
+/* PRODUCTS */
+
+/* SERVICES */
+
+const serviceData = {
+
+"Makeup/Styling":[
+
+"Bridal Makeup",
+"Party Makeup",
+"Hair Styling",
+"Saree Draping"
+
+],
+
+"Mehendi":[
+
+"Bridal Mehendi",
+"Arabic Mehendi",
+"Simple Mehendi",
+"Designer Mehendi"
+
+],
+
+"Nail Art":[
+
+"French Nail Art",
+"Bridal Nail Art",
+"Glitter Nail Art"
+
+],
+
+"Photoshoot":[
+
+"Pre Wedding Shoot",
+"Maternity Shoot",
+"Baby Shoot",
+"Fashion Shoot"
+
+]
+
+};
+
+/* HALLS */
+
+const hallData = {
+
+"Wedding Hall":[
+
+"Grand Wedding Hall",
+"Luxury Palace Hall",
+"Royal Marriage Hall"
+
+],
+
+"Birthday Hall":[
+
+"Kids Birthday Hall",
+"Theme Birthday Hall",
+"Balloon Decor Hall"
+
+],
+
+"Rooftop Hall":[
+
+"Open Rooftop Hall",
+"Luxury Rooftop Lounge",
+"Skyline Rooftop Venue"
+
+]
+
+};
+
+function getFlickrUrl(text) {
+  let keywords = text.toLowerCase().replace(/[^a-z0-9]+/g, ',');
+  return `https://loremflickr.com/400/500/${keywords},event`;
+}
+
+const typeData = {
+
+/* WOMEN */
+
+"Ethnic Sarees":[
+
+"Kanjeevaram Saree",
+"Banarasi Silk Saree",
+"Pre-Stitched Saree",
+"Cotton Saree",
+"Bridal Red Saree",
+],
+
+"Lehengas":[
+
+"Mirror Work Lehenga",
+"Floral Embroidery Lehenga",
+"Royal Bridal Lehenga",
+"Indo-Western Lehenga",
+"Glitter Lehenga"
+
+],
+
+"Dresses":[
+
+"Indo-Western Anarkali",
+"Slit Anarkali",
+"Gown Style Anarkali",
+"Mirror Work Sharara",,
+"Jacket Style Sharara"
+
+],
+
+"Kurtis":[
+
+"Embroidered Kurti",
+"Straight Kurti",
+"Jacket Kurti",
+"Palazzo Kurti Set",
+"Cotton Kurti"
+],
+
+"Western Party Dresses":[
+
+"Layered Gown",
+"Satin Gown",
+"Mermaid Gown",
+"Off-Shoulder Gown",
+"Mini Dress",
+"Bodycon Dress",
+"Corset Dress",
+"Crystal Dress",
+"Disco Party Dress"
+
+],
+
+"Costumes":[
+
+"Traditional Bharatanatyam Dress",
+"Anarkali Style Kathak Dress",
+"Retro Bollywood Outfit",
+"Arabian Belly Dance Dress",
+"Maharani Costume",
+"Disney Princess Inspired",
+
+],
+
+"Jewellery":[
+
+"Bridal Jewelry",
+"Temple Jewelry",
+"Choker",
+"Maang Tikka",
+"Hair Accessories",
+
+
+],
+
+/* MEN */
+
+"Sherwani":[
+
+"Royal Wedding Sherwani",
+"Embroidered Sherwani",
+"Velvet Sherwani",
+"Golden Work Sherwani",
+"Indo-Western Sherwani",
+"Jacket Style Sherwani",
+
+],
+
+"Kurta Pajama":[
+
+"Cotton Kurta Pajama",
+"Silk Kurta Pajama",
+"Embroidered Kurta",
+"Diwali Kurta Set",
+"Eid Kurta Collection",
+"Jacket Kurta Set"
+
+],
+
+"Indo-Western Sets":[
+
+"Indo-Western Jacket Set",
+"Draped Indo-Western Outfit",
+"Layered Fusion Wear",
+"Groom Fusion Outfit",
+"Reception Indo-Western"
+
+],
+
+"Formal & Party":[
+
+"Satin Lapel Tuxedo",
+"Designer Tuxedo",
+"Groom Tuxedo",
+"Cocktail Party Tuxedo",
+"Reception Blazer",
+"Indo-Western Blazer",
+
+],
+
+"Dance Costume Rental":[
+
+"LED Dance Costume",
+"Crew Dance Uniform",
+"Retro Hero Costume",
+"Bhangra Costume",
+"Garba Outfit",
+"Rajasthani Folk Costume",
+"Punjabi Dance Outfit",
+
+],
+
+"Fancy Dress Rental":[
+
+"King Costume",
+"Superhero Costume",
+"Historical Characters",
+"Police/Army Costume",
+"Movie Character Costumes"
+
+],
+
+"Accessories Rental":[
+
+"Satin Tie",
+"Printed Tie",
+"Velvet Bow Tie",
+"Wedding Bow Tie",
+"Groom Turban",
+"Traditional Pagdi"
+
+],
+
+/* KIDS */
+
+"Kids Lehenga":[
+
+"Silk Kids Lehenga",
+"Embroidered Lehenga",
+"Floral Lehenga",
+"Glitter Lehenga",
+"Princess Style Lehenga"
+
+],
+
+"Mini Sherwani":[
+
+"Royal Sherwani",
+"Velvet Sherwani",
+"Indo-Western Sherwani",
+"Reception Sherwani",
+"Jacket Style Sherwani",
+
+],
+
+"Kids Kurta Sets":[
+
+"Cotton Kurta Pajama",
+"Silk Kurta Set",
+"Diwali Kurta Set",
+"Eid Kurta Collection",
+"Jacket Kurta Set",
+
+],
+
+"Kids Party Wear":[
+
+"Cinderella Gown",
+"Barbie Princess Dress",
+"Party Blazer Set",
+"Bow Tie Outfit"
+
+],
+
+"Kids Fancy Dress":[
+
+"Freedom Fighter",
+"Professional Costume",
+"Animal Costumes",
+"Cartoon Character"
+
+],
+
+"Kids Dance Costume":[
+
+"Group Dance Costume",
+"LED Dance Costume",
+"Traditional Bharatanatyam Dress",
+"Freestyle Dance Costume",
+"Retro Theme"
+
+],
+
+"Kids Accessories":[
+
+"Princess Crown",
+"Fairy Wings",
+"Butterfly Wings",
+"Magic Stick",
+"Hats",
+
+]
+
+};
+
+/* LOAD */
+
+function loadGender(gender,btn){
+
+document.querySelectorAll(".gender button")
+.forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
+
+let html="";
+
+categories[gender].forEach(cat=>{
+
+html += `
+
+<div class="category"
+onclick="loadTypes('${cat}')">
+
+<img src="${categoryImages[cat]}">
+
+<p>${cat}</p>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("categories")
+.innerHTML = html;
+
+}
+
+/* LOAD PRODUCTS */
+
+function loadTypes(category){
+
+let html="";
+
+/* DIFFERENT IMAGES (MERGED FROM VERSION 1) */
+
+const productImages = {
+
+"Kanjeevaram Saree":
+"https://i.pinimg.com/webp/736x/55/13/b7/5513b7cb804766f644b615f16da575f2.webp",
+
+"Banarasi Silk Saree":
+"https://i.pinimg.com/1200x/7b/c4/b5/7bc4b5084bbd4efff7ee63e277b91d40.jpg",
+
+"Pre-Stitched Saree":
+"https://i.pinimg.com/1200x/5f/6e/5d/5f6e5df3ba53fe44c3ac8a9629839764.jpg",
+
+"Cotton Saree":
+"https://i.pinimg.com/1200x/cd/a4/f0/cda4f03ca3634bd2d155aa32520e8e4b.jpg",
+
+"Bridal Red Saree":
+"https://i.pinimg.com/736x/33/17/c8/3317c873960fbdd788a1b65987da6c9e.jpg",
+
+"Mirror Work Lehenga":
+"https://i.pinimg.com/1200x/6b/36/ee/6b36eeaaf9e3ed6493547440ca2932ca.jpg",
+
+"Floral Embroidery Lehenga":
+"https://i.pinimg.com/736x/7b/0c/e7/7b0ce7816548b514d50c0c1b5dc32abb.jpg",
+
+"Royal Bridal Lehenga":
+"https://i.pinimg.com/736x/22/b6/b1/22b6b139aec91f3511b67f6145ec62b0.jpg",
+
+"Indo-Western Lehenga":
+"https://i.pinimg.com/736x/04/b2/44/04b2444475fe1294614170f81dadd35f.jpg",
+
+"Glitter Lehenga":
+"https://i.pinimg.com/736x/b3/21/92/b321926c6ee061b9d0bbd3d86a60fabf.jpg",
+"Indo-Western Anarkali":
+"https://i.pinimg.com/1200x/b1/68/5d/b1685d9af1078b40d6b65e2fdcbc854e.jpg",
+"Slit Anarkali":
+"https://i.pinimg.com/736x/fe/f0/58/fef058469344e11725b69fa9db6bf18e.jpg",
+"Gown Style Anarkali":
+"https://i.pinimg.com/736x/f4/5c/7c/f45c7c5f509b0596bd59953613ab34d3.jpg",
+"Mirror Work Sharara":
+"https://i.pinimg.com/736x/10/d4/03/10d403dba0a94d5f13da612227297a64.jpg",
+"Jacket Style Sharara":
+"https://i.pinimg.com/736x/21/35/36/21353682897365f1dfe16c913591aa0f.jpg",
+"Embroidered Kurti":
+"https://i.pinimg.com/736x/1c/92/bb/1c92bb851a1aa6f83bf6936223898e80.jpg",
+"Straight Kurti":
+"https://i.pinimg.com/736x/51/66/57/516657e82f1d76acab38eac4eefd3f1d.jpg",
+"Jacket Kurti":
+"https://i.pinimg.com/736x/63/ef/44/63ef44140f9e59bb1bbaf7746aa1211f.jpg",
+"Palazzo Kurti Set":
+"https://i.pinimg.com/736x/e9/85/3c/e9853c1d8db1fdb50ea9d5ecbc2d1e08.jpg",
+"Cotton Kurti":
+"https://i.pinimg.com/736x/ad/97/1c/ad971c7d6a4ae6d4e30b4300f4d0178e.jpg",
+"Layered Gown":
+"https://i.pinimg.com/736x/9b/18/45/9b184592bf67eae03a22b6788c7b2128.jpg",
+"Satin Gown":
+"https://i.pinimg.com/webp/1200x/82/85/f0/8285f0e2edbbd0e79535a84808bb3b70.webp",
+"Mermaid Gown":
+"https://i.pinimg.com/736x/7a/49/ee/7a49ee374e7c5eff4a1804620fdf9825.jpg",
+"Off-Shoulder Gown":
+"https://i.pinimg.com/736x/c1/52/36/c152369e482ad62fc3a7820ac79a367b.jpg",
+"Mini Dress":
+"https://i.pinimg.com/736x/fc/05/44/fc054410f345d6a4ae48ec756205f83e.jpg",
+"Bodycon Dress":
+"https://i.pinimg.com/736x/7e/99/77/7e9977f716dbcf1aed5dd60b7060d418.jpg",
+"Corset Dress":
+"https://i.pinimg.com/1200x/48/dc/3a/48dc3abfae3dd80a47118e6f6d67345f.jpg",
+"Crystal Dress":
+"https://i.pinimg.com/736x/8d/2f/3f/8d2f3f3d73e4cbbb89270c18c41b9a66.jpg",
+"Disco Party Dress":
+"https://i.pinimg.com/1200x/11/aa/bb/11aabb8056828229998354ba09546ba1.jpg",
+"Traditional Bharatanatyam Dress":
+"https://i.pinimg.com/736x/7d/13/e7/7d13e78f7a880d2354fd5c4f5404f910.jpg",
+"Anarkali Style Kathak Dress":
+"https://i.pinimg.com/736x/b3/db/83/b3db83f72ef2432c49f2ddef22c2311d.jpg",
+"Retro Bollywood Outfit":
+"https://i.pinimg.com/736x/84/ea/00/84ea009782e0b0d82a4028dac0d823b8.jpg",
+"Arabian Belly Dance Dress":
+"https://i.pinimg.com/736x/bb/dd/a3/bbdda306750b0042384b3efe132e55d0.jpg",
+"Maharani Costume":
+"https://i.pinimg.com/736x/b0/0c/eb/b00ceb7cb3e0eba4404fceeff12a825a.jpg",
+"Disney Princess Inspired":
+"https://i.pinimg.com/736x/2f/6b/6f/2f6b6fa73a5e543215d154687fc324db.jpg",
+"Bridal Jewelry":
+"https://i.pinimg.com/1200x/12/9d/87/129d87a4884ef90474ef736d9702eadc.jpg",
+"Temple Jewelry":
+"https://i.pinimg.com/1200x/42/d4/48/42d4488d2727a7db4047292d978cd1cc.jpg",
+"Choker":
+"https://i.pinimg.com/1200x/06/19/f1/0619f1712529c3904fe297ea8966bb8c.jpg",
+"Maang Tikka":
+"https://i.pinimg.com/1200x/fe/a7/70/fea770a136adbfa76bb7ae30e67bfa4b.jpg",
+"Hair Accessories":
+"https://i.pinimg.com/736x/5d/cf/05/5dcf053372aa2e1e6ee2ba9704f62d48.jpg",
+"Royal Wedding Sherwani":
+"https://i.pinimg.com/736x/e5/1c/2a/e51c2a1b78de66c0b7f0c24b9c8017d8.jpg",
+"Embroidered Sherwani":
+"https://i.pinimg.com/736x/c5/6a/c4/c56ac418defd411f32dee4cd1f92fc96.jpg",
+"Velvet Sherwani":
+"https://i.pinimg.com/736x/ef/21/51/ef215115e615ebe01563a93c949c3c3b.jpg",
+"Golden Work Sherwani":
+"https://i.pinimg.com/1200x/fd/29/5b/fd295b580ee65081d360a2a7b6343fad.jpg",
+"Indo-Western Sherwani":
+"https://i.pinimg.com/736x/bd/71/a9/bd71a94d0d1f4c109fc1cb94f4e83985.jpg",
+"Cotton Kurta Pajama":
+"https://i.pinimg.com/736x/ca/fb/3a/cafb3a110d24a9081c9121965553ce02.jpg",
+"Silk Kurta Pajama":
+"https://i.pinimg.com/1200x/12/97/ab/1297abc1bbf4bc06fa754c9124e5de65.jpg",
+"Embroidered Kurta":
+"https://i.pinimg.com/736x/78/e2/74/78e2744ddd26f00ad0f34d7f3553c60f.jpg",
+"Diwali Kurta Set":
+"https://i.pinimg.com/1200x/5a/64/84/5a6484a1dd6cb505ab36a9b16ffeda46.jpg",
+"Eid Kurta Collection":
+"https://i.pinimg.com/736x/06/1a/7d/061a7df89d7b696bf893ede0592a5d2f.jpg",
+"Indo-Western Jacket Set":
+"https://i.pinimg.com/1200x/60/18/aa/6018aa6bf84932bd24ca6ecd02429941.jpg",
+"Draped Indo-Western Outfit":
+"https://i.pinimg.com/736x/c6/eb/1a/c6eb1aea68d7cb65803bbe4f2c937cb0.jpg",
+"Layered Fusion Wear":
+"https://i.pinimg.com/736x/dc/5f/cc/dc5fcc7b3a12547281113d771907df57.jpg",
+"Groom Fusion Outfit":
+"https://i.pinimg.com/1200x/b0/0f/24/b00f24f611529e64b2c09d7ff885073f.jpg",
+"Reception Indo-Western":
+"https://i.pinimg.com/736x/42/c9/1e/42c91ec39b4954020008ff8a0f6675cb.jpg",
+"Satin Lapel Tuxedo":
+"https://i.pinimg.com/1200x/06/d3/b5/06d3b515e463e75a75d632d77beaafcf.jpg",
+"Designer Tuxedo":
+"https://i.pinimg.com/736x/47/57/45/475745445b08c2d66d9f84c955aff23e.jpg",
+"Groom Tuxedo":
+"https://i.pinimg.com/1200x/b1/da/1d/b1da1d15c383e7a69b246cc53725e8d7.jpg",
+"Cocktail Party Tuxedo":
+"https://i.pinimg.com/1200x/ef/b0/35/efb035787459670f41051bfd630f4e79.jpg",
+"Reception Blazer":
+"https://i.pinimg.com/736x/dd/0b/3a/dd0b3aeb01bfe75e31d1483aa9fbb075.jpg",
+"LED Dance Costume":
+"https://i.pinimg.com/736x/16/73/b6/1673b67abb9e01350724a746d07669cb.jpg",
+"Crew Dance Uniform":
+"https://i.pinimg.com/736x/2e/19/e8/2e19e8cb343c5b5396af390d76d615fa.jpg",
+"Retro Hero Costume":
+"https://i.pinimg.com/736x/87/db/e8/87dbe818ab72f223748aa33613f32845.jpg",
+"Bhangra Costume":
+"https://i.pinimg.com/1200x/bb/ee/9e/bbee9ef63fef16577f6bc8abbc5b2349.jpg",
+"Garba Outfit":
+"https://i.pinimg.com/736x/6b/2c/e9/6b2ce9dc5d0e703097af8959bc01ff82.jpg",
+"Rajasthani Folk Costume":
+"https://i.pinimg.com/736x/a3/d1/79/a3d179f2d151ab19ff61d500c8519907.jpg",
+"Punjabi Dance Outfit":
+"https://i.pinimg.com/1200x/89/d8/00/89d8009c29068fd96ca65f05547a5e05.jpg",
+"King Costume":
+"https://i.pinimg.com/736x/51/12/fb/5112fb71f841bfa077bc64babbb2aa4f.jpg",
+"Superhero Costume":
+"https://i.pinimg.com/736x/4a/96/ef/4a96effd033ae7fc0bcb37c8d54b3cfd.jpg",
+"Historical Characters":
+"https://i.pinimg.com/736x/b0/5c/09/b05c0940246c1cbc5a3947a4a29fb02c.jpg",
+"Police/Army Costume":
+"https://i.pinimg.com/736x/b2/77/26/b277269716f24ceaeb7f872d64b4d9bf.jpg",
+"Movie Character Costumes":
+"https://i.pinimg.com/736x/d9/73/61/d9736180748efa1f6f04781afe2502b8.jpg",
+"Satin Tie":
+"https://i.pinimg.com/1200x/d5/19/84/d519841966188e33660015a01d991185.jpg",
+"Printed Tie":
+"https://i.pinimg.com/1200x/d5/19/84/d519841966188e33660015a01d991185.jpg",
+"Printed Tie":
+"https://i.pinimg.com/736x/01/05/cf/0105cfee3193be04247f58ae8fd98ad3.jpg",
+"Velvet Bow Tie":
+"https://i.pinimg.com/736x/70/79/38/70793802610f2258e777a98eef12f48b.jpg",
+"Wedding Bow Tie":
+"https://i.pinimg.com/1200x/d1/d9/53/d1d953e262ce73725b75b4ea8c97aead.jpg",
+"Groom Turban":
+"https://i.pinimg.com/1200x/70/de/24/70de24808d28aa873110e92895984497.jpg",
+"Silk Kids Lehenga":
+"https://i.pinimg.com/736x/b7/93/04/b793041b06ea9235e48c5208602b96d6.jpg",
+"Embroidered Lehenga":
+"https://i.pinimg.com/1200x/e2/4c/36/e24c367c8d4fd1bac5fdb4e528b6df14.jpg",
+"Floral Lehenga":
+"https://i.pinimg.com/736x/a9/84/ca/a984cac30e5b610fe8f7664ce615f3fd.jpg",
+"Princess Style Lehenga":
+"https://i.pinimg.com/736x/8d/37/44/8d374454cf93faa2f709a65b93805569.jpg",
+"Royal Sherwani":
+"https://i.pinimg.com/736x/3d/50/2b/3d502bb61b4c465aebe1c99c8a050f0d.jpg",
+"Reception Sherwani":
+"https://i.pinimg.com/736x/62/ab/bb/62abbbf5fd562c632e55ab04a8e274ee.jpg",
+"Jacket Style Sherwani":
+"https://i.pinimg.com/736x/b0/a9/fd/b0a9fda090eb5af63cf02d63c459f8c5.jpg",
+"Silk Kurta Set":
+"https://i.pinimg.com/736x/06/27/06/062706a4172a5bcee0f53918e3d4a525.jpg",
+"Jacket Kurta Set":
+"https://i.pinimg.com/736x/2b/83/81/2b8381b54a918cfa9da22f7d8f7a626e.jpg",
+"Cinderella Gown":
+"https://i.pinimg.com/736x/80/bb/26/80bb26d8d68c0c010a2f0501381002ff.jpg",
+"Barbie Princess Dress":
+"https://i.pinimg.com/736x/41/a8/2b/41a82b33c8135bc38ab5165af31db429.jpg",
+"Party Blazer Set":
+"https://i.pinimg.com/736x/20/7a/e5/207ae5b824cf1e7a2f7d8aa4b941dc70.jpg",
+"Bow Tie Outfit":
+"https://i.pinimg.com/1200x/5c/31/f5/5c31f53286052fc92203a8fd2f96abc4.jpg",
+"Freedom Fighter":
+"https://i.pinimg.com/736x/74/87/26/748726e785c2ba0332cf1e9ab9f1c228.jpg",
+"Professional Costume":
+"https://i.pinimg.com/1200x/03/5e/b4/035eb4425f4b85334b9dd3c3acd27711.jpg",
+"Animal Costumes":
+"https://i.pinimg.com/1200x/bc/61/eb/bc61eb296c09521972ad00cd4cd401f2.jpg",
+"Cartoon Character":
+"https://i.pinimg.com/1200x/5a/c2/a2/5ac2a22837d2a928c223b8c5bc41fde0.jpg",
+"Group Dance Costume":
+"https://i.pinimg.com/736x/63/70/77/637077a63fb5eeaeca6c086d4f0cf47a.jpg",
+"Freestyle Dance Costume":
+"https://i.pinimg.com/1200x/40/bd/55/40bd555657e39679af8e6f290a03eccf.jpg",
+"Retro Theme":
+"https://i.pinimg.com/736x/e0/41/b1/e041b122c3c0db9d8537f1d84c5e1aa7.jpg",
+"Princess Crown":
+"https://i.pinimg.com/736x/14/8f/0c/148f0cd83541ec3ab1c0be42604eca87.jpg",
+"Fairy Wings":
+"https://i.pinimg.com/736x/4c/b7/db/4cb7db2a416f4ddcc04916d69524cd72.jpg",
+"Butterfly Wings":
+"https://i.pinimg.com/736x/8d/49/d6/8d49d6486f4fe7d3294adf2ce5dc811a.jpg",
+"Magic Stick":
+"https://i.pinimg.com/736x/c6/ce/e0/c6cee073815bdafc7168d82976e48cc3.jpg",
+"Hats":
+"https://i.pinimg.com/736x/fb/db/7a/fbdb7ad22212048dd947cbb5d617225d.jpg",
+
+"":
+"",
+
+
+};
+
+/* PRODUCTS */
+
+if(typeData[category]){
+
+(typeData[category] || []).forEach((type,index)=>{
+
+html += `
+
+<div class="sub-card"
+onclick="openProductPage('${type}')">
+
+<img src="${productImages[type]}">
+
+<h4>${type}</h4>
+
+</div>
+
+`;
+
+});
+
+} else if(serviceData[category]){
+
+(serviceData[category] || []).forEach((type,index)=>{
+
+html += `
+
+<div class="sub-card"
+onclick="openServicePage('${type}')">
+
+<img src="${serviceImages[type] || getFlickrUrl(type)}">
+
+<h4>${type}</h4>
+
+</div>
+
+`;
+
+});
+
+} else if(hallData[category]){
+
+(hallData[category] || []).forEach((type,index)=>{
+
+html += `
+
+<div class="sub-card"
+onclick="openHallPage('${type}')">
+
+<img src="${hallImages[type] || getFlickrUrl(type)}">
+
+<h4>${type}</h4>
+
+</div>
+
+`;
+
+});
+
+}
+
+document.getElementById("types")
+.innerHTML = html;
+
+}
+
+/* OPEN PRODUCT PAGE */
+
+function openProductPage(product){
+
+window.location.href =
+"product.html?q=" +
+encodeURIComponent(product);
+
+}
+
+/* OPEN SERVICE PAGE */
+
+function openServicePage(service){
+
+localStorage.setItem(
+"selectedService",
+service
+);
+
+window.location.href =
+"services.html";
+
+}
+
+/* OPEN HALL PAGE */
+
+function openHallPage(hall){
+
+localStorage.setItem(
+"selectedHall",
+hall
+);
+
+window.location.href =
+"hallbooking.html";
+
+}
+
+/* SHOW PRODUCTS */
+
+function showProducts(btn = document.getElementById('menuProducts')){
+if(btn) {
+  document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active-menu"));
+  btn.classList.add("active-menu");
+}
+document.querySelector(".gender").style.display = "flex";
+
+loadGender(
+"all",
+document.querySelector(".gender button")
+);
+
+}
+
+/* SHOW SERVICES */
+
+function showServices(btn = document.getElementById('menuServices')){
+if(btn) {
+  document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active-menu"));
+  btn.classList.add("active-menu");
+}
+document.querySelector(".gender").style.display = "none";
+
+let html="";
+
+Object.keys(serviceData).forEach(cat=>{
+
+html += `
+
+<div class="category"
+onclick="loadTypes('${cat}')">
+
+<img src="${serviceImages[cat] || getFlickrUrl(cat)}">
+
+<p>${cat}</p>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("categories")
+.innerHTML = html;
+
+document.getElementById("types")
+.innerHTML = "";
+
+}
+
+/* SHOW HALLS */
+
+function showHalls(btn = document.getElementById('menuHalls')){
+if(btn) {
+  document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active-menu"));
+  btn.classList.add("active-menu");
+}
+document.querySelector(".gender").style.display = "none";
+
+let html="";
+
+Object.keys(hallData).forEach(cat=>{
+
+html += `
+
+<div class="category"
+onclick="loadTypes('${cat}')">
+
+<img src="${hallImages[cat] || getFlickrUrl(cat)}">
+
+<p>${cat}</p>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("categories")
+.innerHTML = html;
+
+document.getElementById("types")
+.innerHTML = "";
+
+}
+
+function showSuggestions() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let suggestionsBox = document.getElementById("suggestions");
+    suggestionsBox.innerHTML = "";
+    
+    if (input.length === 0) {
+        suggestionsBox.style.display = "none";
+        return;
+    }
+
+    let allProducts = [];
+    if(typeof productImages !== 'undefined') {
+        allProducts = allProducts.concat(Object.keys(productImages));
+    }
+    if(typeof typeData !== 'undefined') {
+        allProducts = allProducts.concat(Object.keys(typeData));
+    }
+    if(typeof categories !== 'undefined') {
+        allProducts = allProducts.concat(Object.keys(categories));
+    }
+    if(typeof serviceData !== 'undefined') {
+        allProducts = allProducts.concat(Object.keys(serviceData));
+        Object.values(serviceData).forEach(arr => allProducts = allProducts.concat(arr));
+    }
+    if(typeof hallData !== 'undefined') {
+        allProducts = allProducts.concat(Object.keys(hallData));
+        Object.values(hallData).forEach(arr => allProducts = allProducts.concat(arr));
+    }
+    
+    // Remove duplicates
+    allProducts = [...new Set(allProducts)];
+    
+    let matches = allProducts.filter(p => p && p.toLowerCase().includes(input));
+    
+    if (matches.length > 0) {
+        suggestionsBox.style.display = "block";
+        matches.slice(0, 8).forEach(match => {
+            let div = document.createElement("div");
+            div.className = "suggestion-item";
+            div.innerText = match;
+            div.onclick = function() {
+                document.getElementById("searchInput").value = match;
+                suggestionsBox.style.display = "none";
+            };
+            suggestionsBox.appendChild(div);
+        });
+    } else {
+        suggestionsBox.style.display = "none";
+    }
+}
+
+document.addEventListener("click", function(e) {
+    if(!e.target.closest(".search-box")) {
+        let box = document.getElementById("suggestions");
+        if(box) box.style.display = "none";
+    }
+});
+
+function handleSearch(event){
+    if(event.key === "Enter"){
+        let value = event.target.value.trim();
+        if(value) {
+            window.location.href = "search.html?q=" + encodeURIComponent(value);
+        }
+    }
+}
+
+function searchNow(){
+    let value = document.getElementById("searchInput").value.trim();
+    if(value){
+        window.location.href = "search.html?q=" + encodeURIComponent(value);
+    }
+}
+function openWishlist(){
+  window.location.href = "wishlist.html";
+}
+function openCart(){
+  window.location.href = "cart.html";
+}
+
+/* INITIAL */
+
+loadGender(
+"all",
+document.querySelector(".gender button")
+);
+
+/* JS FUNCTIONS (MERGED FROM VERSION 2) */
+function toggleMenu(){
+
+let menu =
+document.getElementById("menuBox");
+
+if(menu.style.display === "block"){
+
+menu.style.display = "none";
+
+}else{
+
+menu.style.display = "block";
+
+}
+
+}
+
+function openOrders(){
+
+window.location.href = "orders.html";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+<script>
+
+let hall =
+localStorage.getItem("selectedHall");
+
+let username =
+localStorage.getItem("name") || "User";
+
+document.getElementById("hallTitle")
+.innerText =
+username + ", Best " + hall;
+
+
+/* CUSTOM HALL IMAGES */
+
+function getHallImages(product){
+
+let bestImages = [];
+let moreImages = [];
+
+if(product === "Grand Wedding Hall"){
+
+bestImages = [
+
+"https://i.pinimg.com/736x/bf/05/93/bf05936ad7de5e817a0beebfb13b2980.jpg",
+
+"https://i.pinimg.com/1200x/e4/c5/f6/e4c5f6f08235fc79abdfdb53ab5ca6ec.jpg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/736x/a8/4f/aa/a84faa2117a47080b7c576bd76fdb2d0.jpg",
+
+"https://i.pinimg.com/736x/ec/5c/a8/ec5ca8a4342e74591371a8a7006d01fb.jpg",
+
+"https://i.pinimg.com/736x/ec/5c/a8/ec5ca8a4342e74591371a8a7006d01fb.jpg",
+
+"https://i.pinimg.com/736x/a2/18/57/a21857c74442a70d5ae3902f7d8d0dde.jpg"
+
+];
+
+}
+
+else if(product === "Luxury Palace Hall"){
+
+bestImages = [
+
+"https://i.pinimg.com/736x/22/8c/9e/228c9e21c506b8dfe2deaa64585eefe1.jpg",
+
+"https://i.pinimg.com/736x/61/0c/57/610c574b46b0079c87cb2f14c330e30a.jpg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/736x/41/69/29/416929798fdb4de1651126c68543ad45.jpg",
+
+"https://i.pinimg.com/1200x/e2/db/26/e2db26ecafce962c1276cd7777aa7168.jpg",
+
+"https://i.pinimg.com/736x/6b/33/c8/6b33c83051d8cdd71ba7fb6a924f4b27.jpg",
+
+"https://i.pinimg.com/736x/6f/5d/f0/6f5df01ae1276b977e351e8569f36749.jpg"
+
+];
+
+}
+
+else if(product === "Royal Marriage Hall"){
+
+bestImages = [
+
+"https://i.pinimg.com/736x/3d/6b/5e/3d6b5e0409a5b9cb6d4d199850a070e1.jpg",
+
+"https://i.pinimg.com/1200x/fe/86/89/fe86890fcacacf34427bb5e164448b98.jpg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/736x/0f/56/1d/0f561dbef11aeef921b5b0df348ef319.jpg",
+
+"https://i.pinimg.com/736x/d2/6a/b4/d26ab437b3284da9cf13756a9238118e.jpg",
+
+"https://i.pinimg.com/736x/e2/15/a3/e215a3084956ce5be9a8195e14a51521.jpg",
+
+"https://i.pinimg.com/736x/eb/ba/fc/ebbafc38035c831051ce3b2aa53e2250.jpg"
+
+];
+
+}
+
+else if(product === "Kids Birthday Hall"){
+
+bestImages = [
+
+"https://i.pinimg.com/1200x/95/e3/b7/95e3b718c171eceeef00588332a8adce.jpg",
+
+"https://i.pinimg.com/1200x/0c/4a/3e/0c4a3e33e4266709a495c73aef7b4bb8.jpg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/1200x/42/e9/90/42e990160fae32a9dbc0f75554f847a4.jpg",
+
+"https://i.pinimg.com/736x/4e/2a/16/4e2a1669163175949db8aa2ae9dbc3c4.jpg",
+
+"https://i.pinimg.com/736x/3b/00/9a/3b009aa299aeb33c33abb4a2e795e827.jpg",
+
+"https://i.pinimg.com/736x/2c/c1/31/2cc1311d8c64eeac355710a1fa815d43.jpg"
+
+];
+
+}
+
+else if(product === "Theme Birthday Hall"){
+
+bestImages = [
+
+"https://i.pinimg.com/1200x/6b/6e/d9/6b6ed9964081b644351418d9edb9f9cf.jpg",
+
+"https://i.pinimg.com/1200x/89/15/cf/8915cfbe16b22155ddb3a7f3614f6746.jpg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/1200x/92/50/e0/9250e03df6558dfcb8d7360fc6d5bf2f.jpg",
+
+"https://i.pinimg.com/1200x/a1/21/85/a121859446ddc762f3717113bda51682.jpg",
+
+"https://i.pinimg.com/736x/aa/e6/49/aae649188b764775042e1f320182c15d.jpg",
+
+"https://i.pinimg.com/1200x/d9/13/f9/d913f980df6feaebf77a52f42ebad743.jpg"
+
+];
+
+}
+
+else if(product === "Balloon Decor Hall"){
+
+bestImages = [
+
+"https://i.pinimg.com/1200x/38/e3/bc/38e3bc0ce39aa1a45fee15a82ec1624f.jpg",
+
+"https://i.pinimg.com/236x/3e/de/f3/3edef35b166c9f9e79c07043f2fa1c87.jpg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/1200x/3f/f0/80/3ff0807b0e3817df095429ff4cf35d8a.jpg",
+
+"https://i.pinimg.com/736x/4a/2b/e9/4a2be93699d0fb0ab58f081370469fb0.jpg",
+
+"https://i.pinimg.com/736x/ee/01/d7/ee01d750f6e8c3c74bcf57b1a57dec2c.jpg",
+
+"https://i.pinimg.com/736x/31/b3/4d/31b34dd38180d5b6da20555b6cc3622d.jpg"
+
+];
+
+}
+
+else if(product === "Open Roof Top"){
+
+bestImages = [
+
+"https://i.pinimg.com/736x/d4/55/4f/d4554f46a4ed23e97f54d7ea4f29489a.jpg",
+
+"https://i.pinimg.com/736x/b5/65/4e/b5654e5a8924c325cd66217163b20dc3.jpg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/1200x/66/a8/86/66a886fe1a40968899b7f14ccd0bb0e0.jpg",
+
+"https://i.pinimg.com/1200x/d4/9e/ae/d49eaec1fd128542eb69857c51a214d0.jpg",
+
+"https://i.pinimg.com/1200x/2a/c5/fa/2ac5fa9b4a1dcdb537b63916935aea85.jpg",
+
+"https://i.pinimg.com/736x/86/4c/d2/864cd22d9737a6d4ee8686e5b4de0fcb.jpg"
+
+];
+
+}
+
+else if(product === "Luxury Roof Top"){
+
+bestImages = [
+
+"https://thumbs.dreamstime.com/b/romantic-roof-wedding-decoration-rooftop-setup-beautifully-decorated-mandap-adorned-greenery-lit-candles-set-against-405046781.jpg",
+
+"https://images.venuebookingz.com/14059-1703939033-wm-royal-orchid-mg-road-banquet-hall-2.jpeg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/736x/72/00/2a/72002ad0f1e1830e137b0e05666b0379.jpg",
+
+"https://i.pinimg.com/736x/98/5c/dc/985cdce650ab68b9689d88288962f9e9.jpg",
+
+"https://i.pinimg.com/736x/eb/52/23/eb5223a64fd6c18f04c079a1c5f8a216.jpg"
+
+];
+
+}
+
+else if(product === "Skyline Rooftop"){
+
+bestImages = [
+
+"https://i.pinimg.com/736x/b4/35/a0/b435a00f8635f39367187809cfefbeae.jpg",
+
+"https://i.pinimg.com/736x/62/37/73/6237734bcd9a7b8da7862be5ba685911.jpg"
+
+];
+
+moreImages = [
+
+"https://i.pinimg.com/736x/a4/f7/10/a4f710da7b8c84b811653dc1b46d602b.jpg",
+
+"https://i.pinimg.com/1200x/d0/2f/3a/d02f3a794b979ca9d413b9c69766fc83.jpg",
+
+"https://i.pinimg.com/1200x/6c/0d/a2/6c0da2614c4bcb34470caa1896610fd6.jpg"
+
+];
+
+}
+
+return [...bestImages, ...moreImages];
+
+}
+
+
+/* DISPLAY HALLS */
+
+let images = getHallImages(hall);
+
+let html = "";
+
+for(let i=0;i<images.length;i++){
+
+html += `
+
+<div class="card">
+
+<img src="${images[i]}">
+
+<div class="info">
+
+<div class="rating">
+⭐ 4.${i+1} | ${180+(i+1)*30} Reviews
+</div>
+
+<h2>${hall}</h2>
+
+<div class="price">
+₹${10000+(i+1)*5000}/day
+</div>
+
+<div class="shop">
+
+<span>
+Vivienne Events
+</span>
+
+<span>
+Mysore
+</span>
+
+</div>
+
+<button class="btn"
+onclick="bookHall('${hall}', '${images[i]}', '₹${10000+(i+1)*5000}/day')">
+
+Book Hall
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+document.getElementById("halls")
+.innerHTML = html;
+
+async function bookHall(name, image, price) {
+
+let orders =
+JSON.parse(localStorage.getItem("orders")) || [];
+
+orders.push({
+name: name,
+image: image,
+price: price,
+item: "hall",
+id: 1,
+reviewSubmitted: false
+});
+
+localStorage.setItem("orders",
+JSON.stringify(orders));
+
+try {
+
+let customerName =
+localStorage.getItem("name") || "Guest";
+
+let amountStr =
+price.replace(/[^0-9]/g, '');
+
+let amount =
+parseInt(amountStr) || 0;
+
+await fetch("http://127.0.0.1:5500/api/orders", {
+
+method: "POST",
+
+headers: {
+"Content-Type": "application/json"
+},
+
+body: JSON.stringify({
+
+customer_name: customerName,
+
+item_name: name,
+
+amount: amount,
+
+seller_name: "Royal Events"
+
+})
+
+});
+
+}
+
+catch(e){
+
+console.log("Could not notify seller dashboard", e);
+
+}
+
+alert("Hall booked successfully! ✅\nYou can view it in your Orders.");
+
+}
+
+</script>

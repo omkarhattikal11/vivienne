@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Your Orders</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5efe6;
+padding:20px;
+margin:0;
+}
+
+h1{
+text-align:center;
+margin-bottom:30px;
+color:#6b4f2a;
+}
+
+.orders-container{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:18px;
+padding:18px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:100%;
+height:320px;
+object-fit:contain;
+background:#fafafa;
+border-radius:12px;
+}
+
+h2{
+margin-top:15px;
+}
+
+.price{
+color:#6b4f2a;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+.stars{
+display:flex;
+gap:8px;
+font-size:30px;
+cursor:pointer;
+margin:15px 0;
+}
+
+.star{
+color:#ccc;
+transition:0.2s;
+}
+
+.star.active{
+color:gold;
+}
+
+textarea{
+width:100%;
+height:120px;
+padding:15px;
+border-radius:12px;
+border:1px solid #ddd;
+resize:none;
+font-size:15px;
+font-family:Arial;
+box-sizing:border-box;
+}
+
+button{
+margin-top:15px;
+width:100%;
+padding:14px;
+border:none;
+background:#6b4f2a;
+color:white;
+border-radius:12px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.review-box{
+background:#faf7f2;
+padding:15px;
+border-radius:12px;
+margin-top:15px;
+}
+
+.review-stars{
+font-size:24px;
+color:gold;
+margin-bottom:10px;
+}
+
+.review-title{
+font-weight:bold;
+margin-bottom:8px;
+color:#6b4f2a;
+}
+
+.empty{
+text-align:center;
+font-size:22px;
+margin-top:80px;
+color:gray;
+}
+
+@media screen and (max-width:768px){
+
+.orders-container{
+grid-template-columns:1fr;
+}
+
+.card img{
+height:220px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>📦 Your Orders</h1>
+
+<div class="orders-container"
+id="ordersContainer">
+
+</div>
+
+<script>
+
+let orders =
+JSON.parse(localStorage.getItem("orders")) || [];
+
+function loadOrders(){
+
+let container =
+document.getElementById("ordersContainer");
+
+if(orders.length === 0){
+
+container.innerHTML = `
+
+<div class="empty">
+
+No orders placed yet 📭
+
+</div>
+
+`;
+
+return;
+
+}
+
+let html = "";
+
+orders.forEach((item,index)=>{
+
+html += `
+
+<div class="card">
+
+<img src="${item.image}">
+
+<h2>${item.name}</h2>
+
+<div class="price">
+
+${item.price}
+
+</div>
+
+${item.reviewSubmitted ? `
+
+<div class="review-box">
+
+<div class="review-title">
+
+Your Review ❤️
+
+</div>
+
+<div class="review-stars">
+
+${"★".repeat(item.rating)}
+${"☆".repeat(5-item.rating)}
+
+</div>
+
+<div>
+
+${item.review}
+
+</div>
+
+</div>
+
+` : `
+
+<h3>
+
+Rate Your Experience
+
+</h3>
+
+<div class="stars">
+
+<span class="star"
+onclick="rateStar(${index},1,this)">
+
+☆</span>
+
+<span class="star"
+onclick="rateStar(${index},2,this)">
+
+☆</span>
+
+<span class="star"
+onclick="rateStar(${index},3,this)">
+
+☆</span>
+
+<span class="star"
+onclick="rateStar(${index},4,this)">
+
+☆</span>
+
+<span class="star"
+onclick="rateStar(${index},5,this)">
+
+☆</span>
+
+</div>
+
+<p style="font-weight:bold;">
+
+Share Your Experience
+
+</p>
+
+<textarea
+id="reviewText${index}"
+maxlength="180"
+placeholder="Write your review here 😊">
+
+</textarea>
+
+<button onclick="submitReview(${index})">
+
+Submit Review
+
+</button>
+
+`}
+
+</div>
+
+`;
+
+});
+
+container.innerHTML = html;
+
+}
+
+function rateStar(index,rating,element){
+
+orders[index].rating = rating;
+
+localStorage.setItem(
+"orders",
+JSON.stringify(orders)
+);
+
+let parent =
+element.parentElement;
+
+let stars =
+parent.querySelectorAll(".star");
+
+stars.forEach((star,i)=>{
+
+if(i < rating){
+
+star.classList.add("active");
+star.innerHTML = "★";
+
+}else{
+
+star.classList.remove("active");
+star.innerHTML = "☆";
+
+}
+
+});
+
+}
+
+function submitReview(index){
+
+let text =
+document.getElementById(
+"reviewText"+index
+).value;
+
+if(!orders[index].rating){
+
+alert("Please select star rating ⭐");
+return;
+
+}
+
+if(text.trim() === ""){
+
+alert("Please write your review 😊");
+return;
+
+}
+
+orders[index].review = text;
+
+orders[index].reviewSubmitted = true;
+
+localStorage.setItem(
+"orders",
+JSON.stringify(orders)
+);
+
+alert(
+"Thank you, your review has been submitted ❤️"
+);
+
+loadOrders();
+
+}
+
+loadOrders();
+
+</script>
+
+</body>
+
+</html>

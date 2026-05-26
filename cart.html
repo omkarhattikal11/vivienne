@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Your Cart</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5efe6;
+padding:20px;
+margin:0;
+}
+
+h1{
+text-align:center;
+margin-bottom:30px;
+color:#6b4f2a;
+}
+
+.cart-container{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:18px;
+padding:18px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:100%;
+height:320px;
+object-fit:contain;
+background:#fafafa;
+border-radius:12px;
+}
+
+h2{
+margin-top:15px;
+}
+
+.price{
+color:#6b4f2a;
+font-weight:bold;
+margin-bottom:20px;
+font-size:22px;
+}
+
+button{
+margin-top:15px;
+width:100%;
+padding:14px;
+border:none;
+background:#6b4f2a;
+color:white;
+border-radius:12px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:#8b6837;
+transform:translateY(-3px);
+}
+
+.remove-btn{
+background:#d9534f;
+}
+.remove-btn:hover{
+background:#c9302c;
+}
+
+.empty{
+text-align:center;
+font-size:22px;
+margin-top:80px;
+color:gray;
+}
+
+.checkout-section{
+text-align:center;
+margin-top:40px;
+}
+
+.checkout-btn{
+background:linear-gradient(45deg,#6b4f2a,#b08d57);
+font-size:20px;
+padding:18px 40px;
+border-radius:30px;
+width:auto;
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+
+.back-btn{
+background:transparent;
+color:#6b4f2a;
+border:2px solid #6b4f2a;
+padding:10px 20px;
+width:auto;
+margin-bottom:20px;
+}
+
+.back-btn:hover{
+background:#6b4f2a;
+color:white;
+}
+
+@media screen and (max-width:768px){
+
+.cart-container{
+grid-template-columns:1fr;
+}
+
+.card img{
+height:220px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<button class="back-btn" onclick="window.history.back()">
+← Back
+</button>
+
+<h1>🛒 Your Cart</h1>
+
+<div class="cart-container"
+id="cartContainer">
+
+</div>
+
+<div class="checkout-section" id="checkoutSection" style="display:none;">
+    <button class="checkout-btn" onclick="proceedToCheckout()">
+        Proceed to Checkout
+    </button>
+</div>
+
+<script>
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+function loadCart(){
+
+let container =
+document.getElementById("cartContainer");
+let checkoutSection = 
+document.getElementById("checkoutSection");
+
+if(cart.length === 0){
+
+container.innerHTML = `
+
+<div class="empty">
+Your cart is empty 🛍️
+</div>
+
+`;
+checkoutSection.style.display = "none";
+return;
+
+}
+
+let html = "";
+
+cart.forEach((item,index)=>{
+
+html += `
+
+<div class="card">
+
+<img src="${item.image}">
+
+<h2>${item.name}</h2>
+
+<div class="price">
+
+${item.price}
+
+</div>
+
+<button class="remove-btn" onclick="removeFromCart(${index})">
+Remove from Cart 🗑️
+</button>
+
+</div>
+
+`;
+
+});
+
+container.innerHTML = html;
+checkoutSection.style.display = "block";
+
+}
+
+function removeFromCart(index){
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+}
+
+function proceedToCheckout(){
+    alert("Proceeding to checkout with " + cart.length + " items! ✅");
+    // Optionally clear cart or redirect to payment page
+    // localStorage.removeItem("cart");
+    // window.location.href = "checkout.html";
+}
+
+loadCart();
+
+</script>
+
+</body>
+
+</html>

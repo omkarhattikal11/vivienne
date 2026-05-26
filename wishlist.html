@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Wishlist</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f5efe6;
+padding:20px;
+}
+
+h1{
+text-align:center;
+margin-bottom:25px;
+color:#6b4f2a;
+}
+
+.wishlist-container{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+padding:15px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:320px;
+object-fit:contain;
+background:#fafafa;
+}
+
+.info{
+padding:10px 0;
+}
+
+.info h3{
+margin:10px 0;
+}
+
+.price{
+color:#6b4f2a;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.btns{
+display:flex;
+gap:10px;
+}
+
+button{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.buy-btn{
+background:#6b4f2a;
+color:white;
+}
+
+.remove-btn{
+background:#e53935;
+color:white;
+}
+
+.empty{
+text-align:center;
+font-size:20px;
+margin-top:50px;
+color:gray;
+}
+
+@media screen and (max-width:768px){
+
+.wishlist-container{
+grid-template-columns:1fr;
+}
+
+.card img{
+height:220px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<h1>❤️ My Wishlist</h1>
+
+<div id="wishlistContainer"
+class="wishlist-container"></div>
+
+<script>
+
+let wishlist =
+JSON.parse(localStorage.getItem("wishlist")) || [];
+
+function loadWishlist(){
+
+let container =
+document.getElementById("wishlistContainer");
+
+if(wishlist.length === 0){
+
+container.innerHTML = `
+<div class="empty">
+Your wishlist is empty 💔
+</div>
+`;
+
+return;
+}
+
+let html = "";
+
+wishlist.forEach((item,index)=>{
+
+html += `
+
+<div class="card">
+
+<div onclick="openProduct(${index})">
+
+<img src="${item.image}">
+
+<div class="info">
+
+<h3>${item.name}</h3>
+
+<div class="price">
+${item.price}
+</div>
+
+</div>
+
+</div>
+
+<div class="btns">
+
+<button class="buy-btn"
+onclick="rentNow(${index})">
+
+Rent Now
+
+</button>
+
+<button class="remove-btn"
+onclick="removeItem(${index})">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+`;
+});
+
+container.innerHTML = html;
+}
+
+function removeItem(index){
+
+wishlist.splice(index,1);
+
+localStorage.setItem(
+"wishlist",
+JSON.stringify(wishlist)
+);
+
+loadWishlist();
+}
+
+function rentNow(index){
+
+let item = wishlist[index];
+
+window.location.href =
+
+"product1.html?item=" + item.item +
+
+"&id=" + item.id +
+
+"&product=" +
+
+encodeURIComponent(item.name);
+
+}
+function openProduct(index){
+
+let item = wishlist[index];
+
+window.location.href =
+
+"product1.html?item=" + item.item +
+
+"&id=" + item.id +
+
+"&product=" +
+
+encodeURIComponent(item.name);
+
+}
+
+loadWishlist();
+
+</script>
+
+</body>
+</html>

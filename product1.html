@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<title>Product Details</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(to right,#f8f5ef,#f3ede3);
+  color:#333;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:35px;
+}
+
+.title-badge{
+  display:inline-block;
+  padding:14px 28px;
+  background:linear-gradient(45deg,#6b4f2a,#b08d57);
+  color:white;
+  border-radius:40px;
+  font-size:28px;
+  font-weight:bold;
+  box-shadow:0 8px 20px rgba(0,0,0,0.18);
+}
+
+/* MAIN */
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:30px;
+}
+
+.card{
+  background:white;
+  border-radius:25px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.12);
+  padding:35px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+
+.product-img{
+  width:100%;
+  height:650px;
+  object-fit:contain;
+  background:#fafafa;
+  border-radius:18px;
+}
+
+/* RIGHT PANEL */
+.details h2{
+  font-size:34px;
+  margin-top:0;
+  color:#2d2215;
+}
+
+.price{
+  font-size:30px;
+  font-weight:bold;
+  color:#6b4f2a;
+  margin-bottom:20px;
+}
+
+.info-box{
+  background:#faf7f2;
+  padding:22px;
+  border-radius:16px;
+  margin-bottom:18px;
+  box-shadow:0 5px 12px rgba(0,0,0,0.05);
+}
+
+.info-box h3{
+  margin-top:0;
+}
+
+input,select{
+  width:100%;
+  padding:14px;
+  margin-top:8px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  font-size:15px;
+}
+
+button{
+  padding:14px 20px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:15px;
+  transition:0.3s;
+}
+
+.primary-btn{
+  background:linear-gradient(45deg,#6b4f2a,#9a7443);
+  color:white;
+  width:100%;
+}
+
+.primary-btn:hover{
+  transform:translateY(-3px);
+}
+
+/* SIZE */
+.sizes{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.size{
+  padding:10px 16px;
+  border:1px solid #6b4f2a;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.size:hover{
+  background:#6b4f2a;
+  color:white;
+}
+  .size.selected{
+  background:#6b4f2a;
+  color:white;
+  transform:scale(1.05);
+  box-shadow:0 5px 12px rgba(0,0,0,0.15);
+}
+
+/* REVIEWS */
+.reviews{
+  margin-top:35px;
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.review{
+  padding:15px;
+  border-bottom:1px solid #eee;
+}
+
+.hidden{
+  display:none;
+}
+
+/* PAYMENT */
+.payment{
+  margin-top:35px;
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.pay-options{
+  display:flex;
+  gap:20px;
+}
+
+.pay-box{
+  flex:1;
+  padding:20px;
+  border:2px solid #ddd;
+  border-radius:15px;
+  text-align:center;
+  cursor:pointer;
+}
+
+.pay-box:hover{
+  border-color:#6b4f2a;
+  background:#faf7f2;
+}
+.fa-heart:hover,
+.fa-share-nodes:hover{
+
+transform:scale(1.15);
+
+transition:0.2s;
+
+color:#6b4f2a;
+}
+  @media screen and (max-width:768px){
+
+  .card{
+    grid-template-columns:1fr;
+    padding:15px;
+    gap:20px;
+  }
+
+  .product-img{
+    height:380px;
+  }
+
+  .details h2{
+    font-size:22px;
+  }
+
+  .price{
+    font-size:24px;
+  }
+
+  .info-box{
+    padding:15px;
+    font-size:14px;
+  }
+
+  .title-badge{
+    font-size:20px;
+    padding:12px 20px;
+  }
+
+  .container{
+    padding:12px;
+  }
+    
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="title-badge">✨ Premium Rental Collection</div>
+</div>
+
+<div class="container">
+
+  <div class="card">
+
+    <img id="productImg" class="product-img">
+
+    <div class="details">
+
+      <div style="
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:15px;
+margin-bottom:10px;">
+
+<h2 id="productName"
+style="
+font-size:34px;
+margin:0;
+color:#2d2215;
+line-height:1.3;
+flex:1;">
+
+</h2>
+
+<div style="
+display:flex;
+gap:18px;
+align-items:center;
+padding-top:8px;">
+
+<i class="fa-regular fa-heart"
+onclick="addToWishlist()"
+style="font-size:24px;cursor:pointer;"></i>
+
+<i class="fa-solid fa-share-nodes"
+onclick="shareProduct()"
+style="font-size:22px;cursor:pointer;"></i>
+
+</div>
+
+</div>
+<div class="price">
+
+<span style="text-decoration:line-through;
+color:gray;
+font-size:22px;">
+
+₹120/hour
+
+</span>
+
+<span id="priceTag">
+
+₹80/hour
+
+</span>
+
+</div>
+
+
+      <div class="info-box">
+        <h3>Rental Duration</h3>
+
+        From:
+        <input type="date" id="fromDate">
+
+        To:
+        <input type="date" id="toDate">
+
+        <br><br>
+        <button class="primary-btn" onclick="calculatePrice()">
+          Calculate Total Price
+        </button>
+
+        <p id="price"></p>
+      </div>
+
+     <div class="info-box" id="sizeSection">
+  <h3 id="sizeTitle">Select Size</h3>
+
+  <div class="sizes" id="sizesContainer">
+    <div class="size" onclick="checkSize(this)">XS</div>
+    <div class="size" onclick="checkSize(this)">S</div>
+    <div class="size" onclick="checkSize(this)">M</div>
+    <div class="size" onclick="checkSize(this)">L</div>
+    <div class="size" onclick="checkSize(this)">XL</div>
+    <div class="size" onclick="checkSize(this)">XXL</div>
+    <div class="size" onclick="checkSize(this)">XXXL</div>
+  </div>
+
+  <p id="sizeStatus" style="margin-top:12px;font-weight:bold;"></p>
+</div>
+<div style="display:flex;gap:15px;margin-top:20px;">
+
+<button class="primary-btn"
+style="flex:1;"
+onclick="addToCart()">
+
+🛒 Add To Cart
+
+</button>
+
+</div>
+
+    </div>
+  </div>
+
+
+  <div class="payment">
+    <h2>Payment Options</h2>
+
+    <div class="pay-options">
+      <div class="pay-box" id="codBox" onclick="selectPayment('COD')">💵 Cash on Delivery</div>
+      <div class="pay-box" id="upiBox" onclick="selectPayment('UPI')">📱 UPI Payment</div>
+    </div>
+
+    <div id="qrContainer" style="display:none; text-align:center; margin-top:20px; padding:15px; background:#f9f9f9; border-radius:10px;">
+      <p style="margin-bottom:10px; font-weight:bold; color:#8b6837;">Scan QR to Pay <span id="upiShopName">Royal Rentals</span></p>
+      <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=royalrentals@upi&pn=Royal%20Rentals&cu=INR" alt="UPI QR Code" style="border-radius:10px;">
+      <p style="margin-top:10px; font-size:12px; color:gray;">After payment, click Place Order</p>
+    </div>
+
+    <br>
+    <button class="primary-btn" onclick="placeOrder()">
+      Place Order
+    </button>
+    
+  </div>
+  <div class="info-box" style="margin-top:30px;">
+
+<h3>Shop Details</h3>
+
+<p><b>🏪 Shop:</b> Royal Rentals</p>
+
+<p><b>📍 Location:</b> Bangalore</p>
+
+<p><b>📞 Contact:</b> +91 9876543210</p>
+
+</div>
+
+<div class="reviews">
+
+<h2>⭐ Customer Reviews</h2>
+
+<div id="reviewContainer"></div>
+
+<br>
+
+<button class="primary-btn"
+onclick="showMoreReviews()">
+
+Read More Reviews
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+const item = params.get("item");
+const id = params.get("id");
+const product = params.get("product");
+
+ const reviewNames = [
+
+"Aarav Sharma",
+"Priya Mehta",
+"Riya Kapoor",
+"Ananya Rao",
+"Rahul Verma",
+"Sneha Iyer",
+"Vikram Singh",
+"Pooja Nair",
+"Karan Malhotra",
+"Neha Joshi"
+
+];
+
+const reviewTexts = [
+
+{
+rating:"⭐ 4.9",
+text:"Absolutely loved the quality. The outfit looked premium and the fitting was perfect. Delivery was also very quick."
+},
+
+{
+rating:"⭐ 4.8",
+text:"Very elegant and clean product. Looked exactly like the images shown on the website."
+},
+
+{
+rating:"⭐ 5.0",
+text:"Received many compliments while wearing this. Definitely worth renting again."
+},
+
+{
+rating:"⭐ 4.7",
+text:"Fabric quality was excellent and packaging was neat. Great experience overall."
+},
+
+{
+rating:"⭐ 4.9",
+text:"Perfect for special occasions. Stylish, comfortable and very affordable."
+},
+
+{
+rating:"⭐ 4.8",
+text:"Customer support was helpful and the rental process was smooth and easy."
+},
+
+{
+rating:"⭐ 5.0",
+text:"Looked brand new and smelled fresh. One of the best rental products I tried."
+},
+
+{
+rating:"⭐ 4.6",
+text:"Very trendy and premium looking. Friends loved the overall appearance."
+},
+
+{
+rating:"⭐ 4.9",
+text:"The fitting and finishing were amazing. Delivery arrived on time."
+},
+
+{
+rating:"⭐ 4.8",
+text:"Excellent rental experience. Will surely recommend this to others."
+}
+
+];
+
+let reviewHTML = "";
+
+reviewTexts.forEach((review,index)=>{
+
+reviewHTML += `
+
+<div class="review ${index >= 5 ? 'hidden extra-review' : ''}">
+
+<div style="font-size:20px;
+font-weight:bold;
+color:#6b4f2a;">
+
+${review.rating}
+
+</div>
+
+<div style="
+font-size:13px;
+color:gray;
+margin-top:4px;
+margin-bottom:10px;">
+
+${reviewNames[index]}
+
+</div>
+
+<div style="
+line-height:1.7;
+font-size:15px;">
+
+${review.text}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("reviewContainer").innerHTML = reviewHTML;
+
+let paymentSelected = false;
+
+function selectPayment(method) {
+  paymentSelected = true;
+  if (method === 'COD') {
+    document.getElementById('codBox').classList.add('active');
+    document.getElementById('upiBox').classList.remove('active');
+    document.getElementById('qrContainer').style.display = 'none';
+  } else {
+    document.getElementById('upiBox').classList.add('active');
+    document.getElementById('codBox').classList.remove('active');
+    document.getElementById('qrContainer').style.display = 'block';
+    
+    // Dynamically generate QR code for this specific product and price
+    let priceText = document.getElementById("priceTag").innerText;
+    let amount = priceText.replace(/[^0-9]/g, '');
+    if(!amount || amount == "0") amount = "500"; // default fallback
+    
+    let shopName = "Royal Rentals";
+    if (item === "weddinghall" || item === "birthdayhall") shopName = "Vivienne Events";
+    if (item === "bridalmakeup" || item === "partymakeup") shopName = "Glow Beauty Studio";
+    
+    document.getElementById("upiShopName").innerText = shopName;
+    
+    let upiString = `upi://pay?pa=royalrentals@upi&pn=${encodeURIComponent(shopName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(product)}`;
+    document.getElementById("qrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiString)}`;
+  }
+}
+
+  if(item === "footwear"){
+  document.getElementById("sizeTitle").innerText = "Select Footwear Size";
+
+  document.getElementById("sizesContainer").innerHTML = `
+    <div class="size" onclick="checkSize(this)">6</div>
+    <div class="size" onclick="checkSize(this)">7</div>
+    <div class="size" onclick="checkSize(this)">8</div>
+    <div class="size" onclick="checkSize(this)">9</div>
+    <div class="size" onclick="checkSize(this)">10</div>
+  `;
+}
+
+if(
+ item === "jewellery" ||
+ item === "bridalmakeup" ||
+ item === "partymakeup" ||
+ item === "weddinghall" ||
+ item === "birthdayhall"
+){
+ document.getElementById("sizeSection").style.display = "none";
+}
+document.getElementById("productName").innerText = product;
+const urlImg = params.get("img");
+const urlPrice = params.get("price");
+
+if(urlPrice) {
+    document.getElementById("priceTag").innerText = urlPrice;
+} else if(item === "bridalmakeup" || item === "partymakeup"){
+  document.getElementById("priceTag").innerText = "₹3000 / session";
+} else if(item === "weddinghall" || item === "birthdayhall"){
+  document.getElementById("priceTag").innerText = "₹500 / hour";
+}
+
+if(urlImg) {
+    document.getElementById("productImg").src = urlImg;
+} else {
+    document.getElementById("productImg").src = "images/" + item + "/" + id + ".jpg";
+}
+
+  let existingWishlist =
+JSON.parse(localStorage.getItem("wishlist")) || [];
+
+let alreadyAdded =
+existingWishlist.some(i => i.name === product);
+
+if(alreadyAdded){
+
+document.querySelector(".fa-heart")
+.classList.remove("fa-regular");
+
+document.querySelector(".fa-heart")
+.classList.add("fa-solid");
+
+document.querySelector(".fa-heart")
+.style.color = "red";
+
+}
+
+function calculatePrice(){
+  let from = new Date(document.getElementById("fromDate").value);
+  let to = new Date(document.getElementById("toDate").value);
+
+  if(isNaN(from.getTime()) || isNaN(to.getTime())) {
+    document.getElementById("price").innerHTML = "❌ Please select valid dates";
+    document.getElementById("price").style.color="red";
+    return;
+  }
+
+  let diff = (to-from)/(1000*60*60*24);
+
+  if(diff < 0) {
+    document.getElementById("price").innerHTML = "❌ Invalid dates. 'To' date cannot be before 'From' date";
+    document.getElementById("price").style.color="red";
+    return;
+  }
+
+  let blockedDates = [5,12,18]; // some unavailable dates
+
+  if(blockedDates.includes(from.getDate())){
+    document.getElementById("price").innerHTML =
+    "❌ Sorry, outfit unavailable during selected dates";
+    document.getElementById("price").style.color="red";
+    return;
+  }
+
+  if(diff>=0){
+    // if diff is 0, let's charge for 1 day minimum, or just diff * 24 * 100
+    let total = diff === 0 ? 2400 : diff * 24 * 100;
+
+    document.getElementById("price").innerHTML =
+    "✅ Available for rent<br><br>Total Price: ₹" + total;
+
+    document.getElementById("price").style.color="green";
+  }
+}
+ function checkSize(element){
+
+  document.querySelectorAll(".size").forEach(size=>{
+    size.classList.remove("selected");
+  });
+
+  element.classList.add("selected");
+
+  let unavailableSizes = ["XS","XXXL"];
+  let selectedSize = element.innerText;
+
+  if(unavailableSizes.includes(selectedSize)){
+    document.getElementById("sizeStatus").innerHTML =
+    "❌ Sorry, this size is currently unavailable";
+    document.getElementById("sizeStatus").style.color = "red";
+  }else{
+    document.getElementById("sizeStatus").innerHTML =
+    "✅ Size available for booking";
+    document.getElementById("sizeStatus").style.color = "green";
+  }
+}
+
+async function placeOrder(){
+
+if(!paymentSelected) {
+  alert("Please select a payment option before placing your order! ⚠️");
+  return;
+}
+
+let orders =
+JSON.parse(localStorage.getItem("orders")) || [];
+
+orders.push({
+
+name: product,
+
+image:
+document.getElementById("productImg").src,
+
+price:
+document.getElementById("priceTag").innerText,
+
+item:item,
+
+id:id
+
+});
+
+localStorage.setItem(
+"orders",
+JSON.stringify(orders)
+);
+
+// SEND TO SELLER DASHBOARD
+try {
+  let customerName = localStorage.getItem("name") || "Guest";
+  let amountStr = document.getElementById("priceTag").innerText.replace(/[^0-9]/g, '');
+  let amount = parseInt(amountStr) || 0;
+  
+  await fetch("http://127.0.0.1:5500/api/orders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      customer_name: customerName,
+      item_name: product,
+      amount: amount,
+      seller_name: "Royal Rentals"
+    })
+  });
+} catch(e) {
+  console.log("Could not notify seller dashboard", e);
+}
+
+alert("Order placed successfully ✅");
+
+}
+function addToWishlist(){
+
+let wishlist =
+JSON.parse(localStorage.getItem("wishlist")) || [];
+
+wishlist.push({
+
+name: product,
+
+image:
+document.getElementById("productImg").src,
+
+price:
+document.getElementById("priceTag").innerText,
+
+item: item,
+
+id: id
+
+});
+localStorage.setItem(
+"wishlist",
+JSON.stringify(wishlist)
+);
+
+document.querySelector(".fa-heart")
+.classList.remove("fa-regular");
+
+document.querySelector(".fa-heart")
+.classList.add("fa-solid");
+
+document.querySelector(".fa-heart")
+.style.color = "red";
+
+alert(product + " added to wishlist ❤️");
+}
+
+  function shareProduct(){
+
+navigator.share({
+
+title: product,
+
+text: "Check out this rental product!",
+
+url: window.location.href
+
+});
+
+}
+  
+function addToCart(){
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  cart.push({
+
+    name: product,
+    image: document.getElementById("productImg").src,
+    price: document.getElementById("priceTag").innerText,
+
+    item: item,
+    id: id
+
+  });
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  alert(product + " added to cart ✅");
+}
+
+function showMoreReviews(){
+
+document.querySelectorAll(".extra-review")
+.forEach(r=>{
+
+r.classList.remove("hidden");
+
+});
+
+}
+</script>
+
+</body>
+</html>

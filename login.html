@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vivienne Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#e8dfd3;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:950px;
+    max-width:100%;
+    min-height:580px;
+    background:rgba(255,255,255,0.30);
+    backdrop-filter:blur(14px);
+    border-radius:24px;
+    overflow:hidden;
+    display:flex;
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* LEFT */
+
+.left{
+    width:50%;
+    padding:40px;
+    background:rgba(255,255,255,0.35);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.logo-img{
+    width:90px;
+    display:block;
+    margin:0 auto 10px;
+    border-radius:12px;
+}
+
+.brand{
+    text-align:center;
+    font-size:40px;
+    font-family:'Playfair Display',serif;
+    color:#8b6f47;
+    letter-spacing:3px;
+    margin-bottom:10px;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:30px;
+    color:#5d4d3d;
+    font-size:24px;
+    font-weight:600;
+}
+
+.field{
+    margin-bottom:18px;
+    position:relative;
+}
+
+.field input{
+    width:100%;
+    padding:14px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:#f5efe8;
+    font-size:15px;
+}
+
+.field input:focus{
+    border:2px solid #b08d57;
+}
+
+.toggle{
+    position:absolute;
+    right:15px;
+    top:14px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* BUTTONS */
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.register-btn{
+    background:#b08d57;
+}
+
+.register-btn:hover{
+    background:#947447;
+}
+
+.login-btn{
+    background:#6d5c4a;
+}
+
+.login-btn:hover{
+    background:#57483a;
+}
+
+/* ROLE TOGGLE */
+.role-toggle {
+    display: flex;
+    background: #f5efe8;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.role-btn {
+    flex: 1;
+    background: transparent;
+    color: #8b6f47;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.role-btn.active {
+    background: #8b6f47;
+    color: white;
+}
+
+/* TEXT */
+
+.bottom-text{
+    margin-top:18px;
+    text-align:center;
+    color:#555;
+}
+
+.bottom-text a{
+    color:#8b6f47;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.bottom-text a:hover{
+    text-decoration:underline;
+}
+
+/* RIGHT */
+
+.right{
+    width:50%;
+}
+
+.right img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .container{
+        flex-direction:column;
+    }
+
+    .left{
+        width:100%;
+    }
+
+    .right{
+        width:100%;
+        height:300px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT SIDE -->
+
+    <div class="left">
+
+        <img
+        class="logo-img"
+        src="https://i.pinimg.com/736x/d9/b9/93/d9b993d8eecfeb1f669f1a30f66030cb.jpg"
+        alt="logo">
+
+        <div class="brand">VIVIENNE</div>
+
+        <div class="role-toggle">
+            <button class="role-btn active" id="btnCustomer" onclick="setRole('user')">Customer</button>
+            <button class="role-btn" id="btnSeller" onclick="setRole('seller')">Shop Owner</button>
+        </div>
+
+        <div class="title" id="title" style="margin-bottom:20px;">Create Account</div>
+
+        <!-- REGISTER -->
+
+        <div id="registerBox">
+
+            <div class="field">
+                <input type="text" id="name" placeholder="Full Name">
+            </div>
+
+            <div class="field">
+                <input type="email" id="email" placeholder="Email Address">
+            </div>
+
+            <div class="field">
+                <input type="password" id="password" placeholder="Password">
+                <span class="toggle" onclick="togglePass('password')">👁</span>
+            </div>
+
+            <!-- Checkbox removed, now controlled by toggle above -->
+
+            <div class="field" id="phoneContainer" style="display:none;">
+                <input type="text" id="phone" placeholder="Phone Number (e.g. +919876543210)">
+            </div>
+
+            <button class="register-btn" onclick="registerUser()">
+                Sign Up
+            </button>
+
+            <div class="bottom-text">
+                Already have an account?
+                <a href="#" onclick="showLogin()">Login</a>
+            </div>
+
+        </div>
+
+        <!-- LOGIN -->
+
+        <div id="loginBox" style="display:none;">
+
+            <div class="field">
+                <input type="email" id="loginEmail" placeholder="Email Address">
+            </div>
+
+            <div class="field">
+                <input type="password" id="loginPassword" placeholder="Password">
+                <span class="toggle" onclick="togglePass('loginPassword')">👁</span>
+            </div>
+
+            <button class="login-btn" onclick="loginUser()">
+                Login
+            </button>
+
+            <div class="bottom-text">
+                New user?
+                <a href="#" onclick="showRegister()">Register</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right">
+        <img id="slider">
+    </div>
+
+</div>
+
+<script>
+
+/* IMAGE SLIDER */
+
+const images = [
+
+"https://i.pinimg.com/736x/33/95/2d/33952d048f576dbf161cdcafb4c09a0d.jpg",
+
+"https://i.pinimg.com/736x/34/95/87/3495876ebb5db6669f6e0b4b30541032.jpg",
+
+"https://i.pinimg.com/1200x/4e/94/0b/4e940bba5637210c36728346a61549ff.jpg",
+
+"https://i.pinimg.com/736x/f2/40/76/f240762c2bcd5306f8565366bff38809.jpg",
+
+"https://i.pinimg.com/736x/ad/03/b7/ad03b7efff535c7e50668680cb60eb9a.jpg",
+
+"https://i.pinimg.com/736x/36/4f/5b/364f5bb836076a2f3ddc6a835eb8afd7.jpg"
+
+];
+
+let index = 0;
+
+const slider = document.getElementById("slider");
+
+slider.src = images[0];
+
+setInterval(() => {
+
+    index = (index + 1) % images.length;
+
+    slider.src = images[index];
+
+}, 2500);
+
+
+/* EMAIL VALIDATION */
+
+function validEmail(email){
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+}
+
+/* PASSWORD VALIDATION */
+
+function validPassword(password){
+
+    return password.length >= 8;
+
+}
+
+/* TOGGLE PASSWORD */
+
+function togglePass(id){
+
+    const input = document.getElementById(id);
+
+    if(input.type === "password"){
+
+        input.type = "text";
+
+    }else{
+
+        input.type = "password";
+
+    }
+
+}
+
+/* REGISTER */
+
+async function registerUser(){
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const phone = document.getElementById("phone").value.trim();
+
+    if(name === "" || email === "" || password === ""){
+        alert("Please fill all fields");
+        return;
+    }
+    
+    if (loginContext === "seller" && phone === "") {
+        alert("Phone Number is required for Sellers");
+        return;
+    }
+
+    if(name.length < 3){
+
+        alert("Name must contain at least 3 characters");
+
+        return;
+
+    }
+
+    if(!validEmail(email)){
+
+        alert("Enter valid email");
+
+        return;
+
+    }
+
+    if(!validPassword(password)){
+
+        alert("Password must be minimum 8 characters");
+
+        return;
+
+    }
+
+    try{
+        const response = await fetch("http://127.0.0.1:5500/register", {
+            method: "POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password,
+                phone,
+                role: loginContext
+            })
+        });
+
+        const data = await response.json();
+        alert(data.message);
+
+        if(data.success){
+            showLogin();
+        }
+    }catch(error){
+        console.log(error);
+        alert("Cannot connect to server");
+    }
+
+}
+
+/* LOGIN */
+
+async function loginUser(){
+
+    const email = document.getElementById("loginEmail").value.trim();
+
+    const password = document.getElementById("loginPassword").value;
+
+    if(email === "" || password === ""){
+
+        alert("Please fill all fields");
+
+        return;
+
+    }
+
+    try{
+        const response = await fetch("http://127.0.0.1:5500/login", {
+            method: "POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                email,
+                password,
+                role: loginContext
+            })
+        });
+
+        const data = await response.json();
+
+        if(data.success){
+            localStorage.setItem("loggedIn", "true");
+            localStorage.setItem("name", data.name);
+            localStorage.setItem("role", data.role);
+            
+            alert("Login Successful 🎉");
+
+            if (data.role === 'seller') {
+                window.location.href = "admin.html";
+            } else {
+                window.location.href = "home.html";
+            }
+        }else{
+            alert(data.message);
+        }
+    }catch(error){
+        console.log(error);
+        alert("Cannot connect to server");
+    }
+
+}
+
+/* SWITCH */
+
+function showLogin(){
+    document.getElementById("registerBox").style.display = "none";
+    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("title").innerText = loginContext === "seller" ? "Seller Login" : "Customer Login";
+}
+
+function showRegister(){
+
+    document.getElementById("registerBox").style.display = "block";
+
+    document.getElementById("loginBox").style.display = "none";
+
+    document.getElementById("title").innerText = loginContext === "seller" ? "Create Seller Account" : "Create Customer Account";
+
+}
+
+function setRole(role) {
+    loginContext = role;
+    
+    // Update active button
+    if (role === 'seller') {
+        document.getElementById('btnSeller').classList.add('active');
+        document.getElementById('btnCustomer').classList.remove('active');
+        
+        // Update placeholders and show phone field
+        document.getElementById("name").placeholder = "Shop Name";
+        document.getElementById("email").placeholder = "Shop Email";
+        document.getElementById("loginEmail").placeholder = "Shop Email";
+        document.getElementById("phoneContainer").style.display = "block";
+    } else {
+        document.getElementById('btnCustomer').classList.add('active');
+        document.getElementById('btnSeller').classList.remove('active');
+        
+        // Revert placeholders and hide phone field
+        document.getElementById("name").placeholder = "Full Name";
+        document.getElementById("email").placeholder = "Email Address";
+        document.getElementById("loginEmail").placeholder = "Email Address";
+        document.getElementById("phoneContainer").style.display = "none";
+    }
+    
+    // Refresh titles based on current view (login vs register)
+    if (document.getElementById("registerBox").style.display === "block") {
+        showRegister();
+    } else {
+        showLogin();
+    }
+}
+
+/* DETERMINE CONTEXT FROM URL */
+let loginContext = "user";
+if (window.location.search.includes("type=seller") || window.location.search.includes("register=seller")) {
+    setRole("seller");
+    showRegister();
+} else {
+    setRole("user");
+    showLogin();
+}
+
+</script>
+
+</body>
+
+</html>

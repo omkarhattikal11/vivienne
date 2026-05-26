@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Search Results</title>
+<style>
+body{
+  font-family:Arial;
+  background:#f5efe6;
+  padding:20px;
+}
+
+h1{
+  margin-bottom:20px;
+}
+
+.results{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.card{
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  cursor:pointer;
+}
+
+.card img{
+  width:100%;
+  height:350px;
+  object-fit:contain;
+  background:#f8f8f8;
+  transform:scaleX(1.15);
+}
+
+.info{
+  padding:15px;
+}
+  .rating{
+
+display:inline-block;
+
+background:#388e3c;
+color:white;
+
+padding:4px 8px;
+
+border-radius:6px;
+
+font-size:13px;
+font-weight:bold;
+
+margin-bottom:8px;
+}
+
+  .premium-heading{
+  text-align:center;
+  font-size:32px;
+  font-weight:bold;
+  color:white;
+  margin-bottom:30px;
+  padding:18px;
+  border-radius:50px;
+  background:linear-gradient(45deg,#6b4f2a,#b08d57);
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  letter-spacing:1px;
+}
+
+  @media screen and (max-width:768px){
+
+  .results{
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .card{
+    border-radius:10px;
+  }
+
+  .card img{
+    height:220px;
+    object-fit:cover;
+    transform:none;
+  }
+
+  .info{
+    padding:8px;
+  }
+
+  .info h3{
+    font-size:14px;
+    margin:4px 0;
+    line-height:1.3;
+  }
+
+  .info p{
+    font-size:11px;
+    margin:2px 0;
+    color:#666;
+  }
+
+  .premium-heading{
+    font-size:22px;
+    padding:12px;
+    margin-bottom:18px;
+  }
+
+  body{
+    padding:10px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="premium-heading">
+   ✨ Premium Rental Collection
+</div>
+<div class="results" id="results"></div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+let query = params.get("q").toLowerCase().trim();
+
+const aliases = {};
+aliases["makeup/styling"] = "Makeup/Styling";
+aliases["makeup"] = "Makeup/Styling";
+aliases["tyling"] = "Makeup/Styling";
+aliases["mehendi"] = "Mehendi";
+aliases["mehendi"] = "Mehendi";
+aliases["nail art"] = "Nail Art";
+aliases["nail art"] = "Nail Art";
+aliases["photoshoot"] = "Photoshoot";
+aliases["photo"] = "Photoshoot";
+aliases["hoot"] = "Photoshoot";
+aliases["wedding hall"] = "Wedding Hall";
+aliases["wedding hall"] = "Wedding Hall";
+aliases["birthday hall"] = "Birthday Hall";
+aliases["birthday hall"] = "Birthday Hall";
+aliases["rooftop hall"] = "Rooftop Hall";
+aliases["rooftop hall"] = "Rooftop Hall";
+aliases["ethnic sarees"] = "Ethnic Sarees";
+aliases["ethnic "] = "Ethnic Sarees";
+aliases["aree"] = "Ethnic Sarees";
+aliases["lehengas"] = "Lehengas";
+aliases["lehenga"] = "Lehengas";
+aliases["dresses"] = "Dresses";
+aliases["kurtis"] = "Kurtis";
+aliases["kurti"] = "Kurtis";
+aliases["western party dresses"] = "Western Party Dresses";
+aliases["tern party dre"] = "Western Party Dresses";
+aliases["costumes"] = "Costumes";
+aliases["tume"] = "Costumes";
+aliases["jewellery"] = "Jewellery";
+aliases["jewellery"] = "Jewellery";
+aliases["sherwani"] = "Sherwani";
+aliases["herwani"] = "Sherwani";
+aliases["kurta pajama"] = "Kurta Pajama";
+aliases["kurta pajama"] = "Kurta Pajama";
+aliases["indo-western sets"] = "Indo-Western Sets";
+aliases["indo"] = "Indo-Western Sets";
+aliases["tern "] = "Indo-Western Sets";
+aliases["formal & party"] = "Formal & Party";
+aliases["formal & party"] = "Formal & Party";
+aliases["dance costume rental"] = "Dance Costume Rental";
+aliases["dance co"] = "Dance Costume Rental";
+aliases["tume rental"] = "Dance Costume Rental";
+aliases["fancy dress rental"] = "Fancy Dress Rental";
+aliases["fancy dre"] = "Fancy Dress Rental";
+aliases[" rental"] = "Fancy Dress Rental";
+aliases["accessories rental"] = "Accessories Rental";
+aliases["acce"] = "Accessories Rental";
+aliases["orie"] = "Accessories Rental";
+aliases[" rental"] = "Accessories Rental";
+aliases["kids lehenga"] = "Kids Lehenga";
+aliases[" lehenga"] = "Kids Lehenga";
+aliases["mini sherwani"] = "Mini Sherwani";
+aliases["mini "] = "Mini Sherwani";
+aliases["herwani"] = "Mini Sherwani";
+aliases["kids kurta sets"] = "Kids Kurta Sets";
+aliases[" kurta "] = "Kids Kurta Sets";
+aliases["kids party wear"] = "Kids Party Wear";
+aliases[" party wear"] = "Kids Party Wear";
+aliases["kids fancy dress"] = "Kids Fancy Dress";
+aliases[" fancy dre"] = "Kids Fancy Dress";
+aliases["kids dance costume"] = "Kids Dance Costume";
+aliases[" dance co"] = "Kids Dance Costume";
+aliases["tume"] = "Kids Dance Costume";
+aliases["kids accessories"] = "Kids Accessories";
+aliases[" acce"] = "Kids Accessories";
+aliases["orie"] = "Kids Accessories";
+
+query = aliases[query] || query;
+
+/* PRODUCT DATABASE */
+const productDatabase = Object.assign({}, {
+
+"Makeup/Styling":[
+
+"Bridal Makeup",
+"Party Makeup",
+"Hair Styling",
+"Saree Draping"
+
+],
+
+"Mehendi":[
+
+"Bridal Mehendi",
+"Arabic Mehendi",
+"Simple Mehendi",
+"Designer Mehendi"
+
+],
+
+"Nail Art":[
+
+"French Nail Art",
+"Bridal Nail Art",
+"Glitter Nail Art"
+
+],
+
+"Photoshoot":[
+
+"Pre Wedding Shoot",
+"Maternity Shoot",
+"Baby Shoot",
+"Fashion Shoot"
+
+]
+
+}, {
+
+"Wedding Hall":[
+
+"Grand Wedding Hall",
+"Luxury Palace Hall",
+"Royal Marriage Hall"
+
+],
+
+"Birthday Hall":[
+
+"Kids Birthday Hall",
+"Theme Birthday Hall",
+"Balloon Decor Hall"
+
+],
+
+"Rooftop Hall":[
+
+"Open Rooftop Hall",
+"Luxury Rooftop Lounge",
+"Skyline Rooftop Venue"
+
+]
+
+}, {
+
+/* WOMEN */
+
+"Ethnic Sarees":[
+
+"Kanjeevaram Saree",
+"Banarasi Silk Saree",
+"Pre-Stitched Saree",
+"Cotton Saree",
+"Bridal Red Saree",
+],
+
+"Lehengas":[
+
+"Mirror Work Lehenga",
+"Floral Embroidery Lehenga",
+"Royal Bridal Lehenga",
+"Indo-Western Lehenga",
+"Glitter Lehenga"
+
+],
+
+"Dresses":[
+
+"Indo-Western Anarkali",
+"Slit Anarkali",
+"Gown Style Anarkali",
+"Mirror Work Sharara",,
+"Jacket Style Sharara"
+
+],
+
+"Kurtis":[
+
+"Embroidered Kurti",
+"Straight Kurti",
+"Jacket Kurti",
+"Palazzo Kurti Set",
+"Cotton Kurti"
+],
+
+"Western Party Dresses":[
+
+"Layered Gown",
+"Satin Gown",
+"Mermaid Gown",
+"Off-Shoulder Gown",
+"Mini Dress",
+"Bodycon Dress",
+"Corset Dress",
+"Crystal Dress",
+"Disco Party Dress"
+
+],
+
+"Costumes":[
+
+"Traditional Bharatanatyam Dress",
+"Anarkali Style Kathak Dress",
+"Retro Bollywood Outfit",
+"Arabian Belly Dance Dress",
+"Maharani Costume",
+"Disney Princess Inspired",
+
+],
+
+"Jewellery":[
+
+"Bridal Jewelry",
+"Temple Jewelry",
+"Choker",
+"Maang Tikka",
+"Hair Accessories",
+
+
+],
+
+/* MEN */
+
+"Sherwani":[
+
+"Royal Wedding Sherwani",
+"Embroidered Sherwani",
+"Velvet Sherwani",
+"Golden Work Sherwani",
+"Indo-Western Sherwani",
+"Jacket Style Sherwani",
+
+],
+
+"Kurta Pajama":[
+
+"Cotton Kurta Pajama",
+"Silk Kurta Pajama",
+"Embroidered Kurta",
+"Diwali Kurta Set",
+"Eid Kurta Collection",
+"Jacket Kurta Set"
+
+],
+
+"Indo-Western Sets":[
+
+"Indo-Western Jacket Set",
+"Draped Indo-Western Outfit",
+"Layered Fusion Wear",
+"Groom Fusion Outfit",
+"Reception Indo-Western"
+
+],
+
+"Formal & Party":[
+
+"Satin Lapel Tuxedo",
+"Designer Tuxedo",
+"Groom Tuxedo",
+"Cocktail Party Tuxedo",
+"Reception Blazer",
+"Indo-Western Blazer",
+
+],
+
+"Dance Costume Rental":[
+
+"LED Dance Costume",
+"Crew Dance Uniform",
+"Retro Hero Costume",
+"Bhangra Costume",
+"Garba Outfit",
+"Rajasthani Folk Costume",
+"Punjabi Dance Outfit",
+
+],
+
+"Fancy Dress Rental":[
+
+"King Costume",
+"Superhero Costume",
+"Historical Characters",
+"Police/Army Costume",
+"Movie Character Costumes"
+
+],
+
+"Accessories Rental":[
+
+"Satin Tie",
+"Printed Tie",
+"Velvet Bow Tie",
+"Wedding Bow Tie",
+"Groom Turban",
+"Traditional Pagdi"
+
+],
+
+/* KIDS */
+
+"Kids Lehenga":[
+
+"Silk Kids Lehenga",
+"Embroidered Lehenga",
+"Floral Lehenga",
+"Glitter Lehenga",
+"Princess Style Lehenga"
+
+],
+
+"Mini Sherwani":[
+
+"Royal Sherwani",
+"Velvet Sherwani",
+"Indo-Western Sherwani",
+"Reception Sherwani",
+"Jacket Style Sherwani",
+
+],
+
+"Kids Kurta Sets":[
+
+"Cotton Kurta Pajama",
+"Silk Kurta Set",
+"Diwali Kurta Set",
+"Eid Kurta Collection",
+"Jacket Kurta Set",
+
+],
+
+"Kids Party Wear":[
+
+"Cinderella Gown",
+"Barbie Princess Dress",
+"Party Blazer Set",
+"Bow Tie Outfit"
+
+],
+
+"Kids Fancy Dress":[
+
+"Freedom Fighter",
+"Professional Costume",
+"Animal Costumes",
+"Cartoon Character"
+
+],
+
+"Kids Dance Costume":[
+
+"Group Dance Costume",
+"LED Dance Costume",
+"Traditional Bharatanatyam Dress",
+"Freestyle Dance Costume",
+"Retro Theme"
+
+],
+
+"Kids Accessories":[
+
+"Princess Crown",
+"Fairy Wings",
+"Butterfly Wings",
+"Magic Stick",
+"Hats",
+
+]
+
+});
+const productImages = {
+
+"Kanjeevaram Saree":
+"https://i.pinimg.com/webp/736x/55/13/b7/5513b7cb804766f644b615f16da575f2.webp",
+
+"Banarasi Silk Saree":
+"https://i.pinimg.com/1200x/7b/c4/b5/7bc4b5084bbd4efff7ee63e277b91d40.jpg",
+
+"Pre-Stitched Saree":
+"https://i.pinimg.com/1200x/5f/6e/5d/5f6e5df3ba53fe44c3ac8a9629839764.jpg",
+
+"Cotton Saree":
+"https://i.pinimg.com/1200x/cd/a4/f0/cda4f03ca3634bd2d155aa32520e8e4b.jpg",
+
+"Bridal Red Saree":
+"https://i.pinimg.com/736x/33/17/c8/3317c873960fbdd788a1b65987da6c9e.jpg",
+
+"Mirror Work Lehenga":
+"https://i.pinimg.com/1200x/6b/36/ee/6b36eeaaf9e3ed6493547440ca2932ca.jpg",
+
+"Floral Embroidery Lehenga":
+"https://i.pinimg.com/736x/7b/0c/e7/7b0ce7816548b514d50c0c1b5dc32abb.jpg",
+
+"Royal Bridal Lehenga":
+"https://i.pinimg.com/736x/22/b6/b1/22b6b139aec91f3511b67f6145ec62b0.jpg",
+
+"Indo-Western Lehenga":
+"https://i.pinimg.com/736x/04/b2/44/04b2444475fe1294614170f81dadd35f.jpg",
+
+"Glitter Lehenga":
+"https://i.pinimg.com/736x/b3/21/92/b321926c6ee061b9d0bbd3d86a60fabf.jpg",
+"Indo-Western Anarkali":
+"https://i.pinimg.com/1200x/b1/68/5d/b1685d9af1078b40d6b65e2fdcbc854e.jpg",
+"Slit Anarkali":
+"https://i.pinimg.com/736x/fe/f0/58/fef058469344e11725b69fa9db6bf18e.jpg",
+"Gown Style Anarkali":
+"https://i.pinimg.com/736x/f4/5c/7c/f45c7c5f509b0596bd59953613ab34d3.jpg",
+"Mirror Work Sharara":
+"https://i.pinimg.com/736x/10/d4/03/10d403dba0a94d5f13da612227297a64.jpg",
+"Jacket Style Sharara":
+"https://i.pinimg.com/736x/21/35/36/21353682897365f1dfe16c913591aa0f.jpg",
+"Embroidered Kurti":
+"https://i.pinimg.com/736x/1c/92/bb/1c92bb851a1aa6f83bf6936223898e80.jpg",
+"Straight Kurti":
+"https://i.pinimg.com/736x/51/66/57/516657e82f1d76acab38eac4eefd3f1d.jpg",
+"Jacket Kurti":
+"https://i.pinimg.com/736x/63/ef/44/63ef44140f9e59bb1bbaf7746aa1211f.jpg",
+"Palazzo Kurti Set":
+"https://i.pinimg.com/736x/e9/85/3c/e9853c1d8db1fdb50ea9d5ecbc2d1e08.jpg",
+"Cotton Kurti":
+"https://i.pinimg.com/736x/ad/97/1c/ad971c7d6a4ae6d4e30b4300f4d0178e.jpg",
+"Layered Gown":
+"https://i.pinimg.com/736x/9b/18/45/9b184592bf67eae03a22b6788c7b2128.jpg",
+"Satin Gown":
+"https://i.pinimg.com/webp/1200x/82/85/f0/8285f0e2edbbd0e79535a84808bb3b70.webp",
+"Mermaid Gown":
+"https://i.pinimg.com/736x/7a/49/ee/7a49ee374e7c5eff4a1804620fdf9825.jpg",
+"Off-Shoulder Gown":
+"https://i.pinimg.com/736x/c1/52/36/c152369e482ad62fc3a7820ac79a367b.jpg",
+"Mini Dress":
+"https://i.pinimg.com/736x/fc/05/44/fc054410f345d6a4ae48ec756205f83e.jpg",
+"Bodycon Dress":
+"https://i.pinimg.com/736x/7e/99/77/7e9977f716dbcf1aed5dd60b7060d418.jpg",
+"Corset Dress":
+"https://i.pinimg.com/1200x/48/dc/3a/48dc3abfae3dd80a47118e6f6d67345f.jpg",
+"Crystal Dress":
+"https://i.pinimg.com/736x/8d/2f/3f/8d2f3f3d73e4cbbb89270c18c41b9a66.jpg",
+"Disco Party Dress":
+"https://i.pinimg.com/1200x/11/aa/bb/11aabb8056828229998354ba09546ba1.jpg",
+"Traditional Bharatanatyam Dress":
+"https://i.pinimg.com/736x/7d/13/e7/7d13e78f7a880d2354fd5c4f5404f910.jpg",
+"Anarkali Style Kathak Dress":
+"https://i.pinimg.com/736x/b3/db/83/b3db83f72ef2432c49f2ddef22c2311d.jpg",
+"Retro Bollywood Outfit":
+"https://i.pinimg.com/736x/84/ea/00/84ea009782e0b0d82a4028dac0d823b8.jpg",
+"Arabian Belly Dance Dress":
+"https://i.pinimg.com/736x/bb/dd/a3/bbdda306750b0042384b3efe132e55d0.jpg",
+"Maharani Costume":
+"https://i.pinimg.com/736x/b0/0c/eb/b00ceb7cb3e0eba4404fceeff12a825a.jpg",
+"Disney Princess Inspired":
+"https://i.pinimg.com/736x/2f/6b/6f/2f6b6fa73a5e543215d154687fc324db.jpg",
+"Bridal Jewelry":
+"https://i.pinimg.com/1200x/12/9d/87/129d87a4884ef90474ef736d9702eadc.jpg",
+"Temple Jewelry":
+"https://i.pinimg.com/1200x/42/d4/48/42d4488d2727a7db4047292d978cd1cc.jpg",
+"Choker":
+"https://i.pinimg.com/1200x/06/19/f1/0619f1712529c3904fe297ea8966bb8c.jpg",
+"Maang Tikka":
+"https://i.pinimg.com/1200x/fe/a7/70/fea770a136adbfa76bb7ae30e67bfa4b.jpg",
+"Hair Accessories":
+"https://i.pinimg.com/736x/5d/cf/05/5dcf053372aa2e1e6ee2ba9704f62d48.jpg",
+"Royal Wedding Sherwani":
+"https://i.pinimg.com/736x/e5/1c/2a/e51c2a1b78de66c0b7f0c24b9c8017d8.jpg",
+"Embroidered Sherwani":
+"https://i.pinimg.com/736x/c5/6a/c4/c56ac418defd411f32dee4cd1f92fc96.jpg",
+"Velvet Sherwani":
+"https://i.pinimg.com/736x/ef/21/51/ef215115e615ebe01563a93c949c3c3b.jpg",
+"Golden Work Sherwani":
+"https://i.pinimg.com/1200x/fd/29/5b/fd295b580ee65081d360a2a7b6343fad.jpg",
+"Indo-Western Sherwani":
+"https://i.pinimg.com/736x/bd/71/a9/bd71a94d0d1f4c109fc1cb94f4e83985.jpg",
+"Cotton Kurta Pajama":
+"https://i.pinimg.com/736x/ca/fb/3a/cafb3a110d24a9081c9121965553ce02.jpg",
+"Silk Kurta Pajama":
+"https://i.pinimg.com/1200x/12/97/ab/1297abc1bbf4bc06fa754c9124e5de65.jpg",
+"Embroidered Kurta":
+"https://i.pinimg.com/736x/78/e2/74/78e2744ddd26f00ad0f34d7f3553c60f.jpg",
+"Diwali Kurta Set":
+"https://i.pinimg.com/1200x/5a/64/84/5a6484a1dd6cb505ab36a9b16ffeda46.jpg",
+"Eid Kurta Collection":
+"https://i.pinimg.com/736x/06/1a/7d/061a7df89d7b696bf893ede0592a5d2f.jpg",
+"Indo-Western Jacket Set":
+"https://i.pinimg.com/1200x/60/18/aa/6018aa6bf84932bd24ca6ecd02429941.jpg",
+"Draped Indo-Western Outfit":
+"https://i.pinimg.com/736x/c6/eb/1a/c6eb1aea68d7cb65803bbe4f2c937cb0.jpg",
+"Layered Fusion Wear":
+"https://i.pinimg.com/736x/dc/5f/cc/dc5fcc7b3a12547281113d771907df57.jpg",
+"Groom Fusion Outfit":
+"https://i.pinimg.com/1200x/b0/0f/24/b00f24f611529e64b2c09d7ff885073f.jpg",
+"Reception Indo-Western":
+"https://i.pinimg.com/736x/42/c9/1e/42c91ec39b4954020008ff8a0f6675cb.jpg",
+"Satin Lapel Tuxedo":
+"https://i.pinimg.com/1200x/06/d3/b5/06d3b515e463e75a75d632d77beaafcf.jpg",
+"Designer Tuxedo":
+"https://i.pinimg.com/736x/47/57/45/475745445b08c2d66d9f84c955aff23e.jpg",
+"Groom Tuxedo":
+"https://i.pinimg.com/1200x/b1/da/1d/b1da1d15c383e7a69b246cc53725e8d7.jpg",
+"Cocktail Party Tuxedo":
+"https://i.pinimg.com/1200x/ef/b0/35/efb035787459670f41051bfd630f4e79.jpg",
+"Reception Blazer":
+"https://i.pinimg.com/736x/dd/0b/3a/dd0b3aeb01bfe75e31d1483aa9fbb075.jpg",
+"LED Dance Costume":
+"https://i.pinimg.com/736x/16/73/b6/1673b67abb9e01350724a746d07669cb.jpg",
+"Crew Dance Uniform":
+"https://i.pinimg.com/736x/2e/19/e8/2e19e8cb343c5b5396af390d76d615fa.jpg",
+"Retro Hero Costume":
+"https://i.pinimg.com/736x/87/db/e8/87dbe818ab72f223748aa33613f32845.jpg",
+"Bhangra Costume":
+"https://i.pinimg.com/1200x/bb/ee/9e/bbee9ef63fef16577f6bc8abbc5b2349.jpg",
+"Garba Outfit":
+"https://i.pinimg.com/736x/6b/2c/e9/6b2ce9dc5d0e703097af8959bc01ff82.jpg",
+"Rajasthani Folk Costume":
+"https://i.pinimg.com/736x/a3/d1/79/a3d179f2d151ab19ff61d500c8519907.jpg",
+"Punjabi Dance Outfit":
+"https://i.pinimg.com/1200x/89/d8/00/89d8009c29068fd96ca65f05547a5e05.jpg",
+"King Costume":
+"https://i.pinimg.com/736x/51/12/fb/5112fb71f841bfa077bc64babbb2aa4f.jpg",
+"Superhero Costume":
+"https://i.pinimg.com/736x/4a/96/ef/4a96effd033ae7fc0bcb37c8d54b3cfd.jpg",
+"Historical Characters":
+"https://i.pinimg.com/736x/b0/5c/09/b05c0940246c1cbc5a3947a4a29fb02c.jpg",
+"Police/Army Costume":
+"https://i.pinimg.com/736x/b2/77/26/b277269716f24ceaeb7f872d64b4d9bf.jpg",
+"Movie Character Costumes":
+"https://i.pinimg.com/736x/d9/73/61/d9736180748efa1f6f04781afe2502b8.jpg",
+"Satin Tie":
+"https://i.pinimg.com/1200x/d5/19/84/d519841966188e33660015a01d991185.jpg",
+"Printed Tie":
+"https://i.pinimg.com/1200x/d5/19/84/d519841966188e33660015a01d991185.jpg",
+"Printed Tie":
+"https://i.pinimg.com/736x/01/05/cf/0105cfee3193be04247f58ae8fd98ad3.jpg",
+"Velvet Bow Tie":
+"https://i.pinimg.com/736x/70/79/38/70793802610f2258e777a98eef12f48b.jpg",
+"Wedding Bow Tie":
+"https://i.pinimg.com/1200x/d1/d9/53/d1d953e262ce73725b75b4ea8c97aead.jpg",
+"Groom Turban":
+"https://i.pinimg.com/1200x/70/de/24/70de24808d28aa873110e92895984497.jpg",
+"Silk Kids Lehenga":
+"https://i.pinimg.com/736x/b7/93/04/b793041b06ea9235e48c5208602b96d6.jpg",
+"Embroidered Lehenga":
+"https://i.pinimg.com/1200x/e2/4c/36/e24c367c8d4fd1bac5fdb4e528b6df14.jpg",
+"Floral Lehenga":
+"https://i.pinimg.com/736x/a9/84/ca/a984cac30e5b610fe8f7664ce615f3fd.jpg",
+"Princess Style Lehenga":
+"https://i.pinimg.com/736x/8d/37/44/8d374454cf93faa2f709a65b93805569.jpg",
+"Royal Sherwani":
+"https://i.pinimg.com/736x/3d/50/2b/3d502bb61b4c465aebe1c99c8a050f0d.jpg",
+"Reception Sherwani":
+"https://i.pinimg.com/736x/62/ab/bb/62abbbf5fd562c632e55ab04a8e274ee.jpg",
+"Jacket Style Sherwani":
+"https://i.pinimg.com/736x/b0/a9/fd/b0a9fda090eb5af63cf02d63c459f8c5.jpg",
+"Silk Kurta Set":
+"https://i.pinimg.com/736x/06/27/06/062706a4172a5bcee0f53918e3d4a525.jpg",
+"Jacket Kurta Set":
+"https://i.pinimg.com/736x/2b/83/81/2b8381b54a918cfa9da22f7d8f7a626e.jpg",
+"Cinderella Gown":
+"https://i.pinimg.com/736x/80/bb/26/80bb26d8d68c0c010a2f0501381002ff.jpg",
+"Barbie Princess Dress":
+"https://i.pinimg.com/736x/41/a8/2b/41a82b33c8135bc38ab5165af31db429.jpg",
+"Party Blazer Set":
+"https://i.pinimg.com/736x/20/7a/e5/207ae5b824cf1e7a2f7d8aa4b941dc70.jpg",
+"Bow Tie Outfit":
+"https://i.pinimg.com/1200x/5c/31/f5/5c31f53286052fc92203a8fd2f96abc4.jpg",
+"Freedom Fighter":
+"https://i.pinimg.com/736x/74/87/26/748726e785c2ba0332cf1e9ab9f1c228.jpg",
+"Professional Costume":
+"https://i.pinimg.com/1200x/03/5e/b4/035eb4425f4b85334b9dd3c3acd27711.jpg",
+"Animal Costumes":
+"https://i.pinimg.com/1200x/bc/61/eb/bc61eb296c09521972ad00cd4cd401f2.jpg",
+"Cartoon Character":
+"https://i.pinimg.com/1200x/5a/c2/a2/5ac2a22837d2a928c223b8c5bc41fde0.jpg",
+"Group Dance Costume":
+"https://i.pinimg.com/736x/63/70/77/637077a63fb5eeaeca6c086d4f0cf47a.jpg",
+"Freestyle Dance Costume":
+"https://i.pinimg.com/1200x/40/bd/55/40bd555657e39679af8e6f290a03eccf.jpg",
+"Retro Theme":
+"https://i.pinimg.com/736x/e0/41/b1/e041b122c3c0db9d8537f1d84c5e1aa7.jpg",
+"Princess Crown":
+"https://i.pinimg.com/736x/14/8f/0c/148f0cd83541ec3ab1c0be42604eca87.jpg",
+"Fairy Wings":
+"https://i.pinimg.com/736x/4c/b7/db/4cb7db2a416f4ddcc04916d69524cd72.jpg",
+"Butterfly Wings":
+"https://i.pinimg.com/736x/8d/49/d6/8d49d6486f4fe7d3294adf2ce5dc811a.jpg",
+"Magic Stick":
+"https://i.pinimg.com/736x/c6/ce/e0/c6cee073815bdafc7168d82976e48cc3.jpg",
+"Hats":
+"https://i.pinimg.com/736x/fb/db/7a/fbdb7ad22212048dd947cbb5d617225d.jpg",
+
+"":
+"",
+
+
+};
+
+let html = "";
+let products = [];
+
+// Try exact category match
+let foundCatProducts = productDatabase[query];
+
+// Case-insensitive search against categories if exact match fails
+if(!foundCatProducts) {
+    let lowerCat = Object.keys(productDatabase).find(k => k.toLowerCase() === query);
+    if(lowerCat) foundCatProducts = productDatabase[lowerCat];
+}
+
+if (foundCatProducts) {
+    products = foundCatProducts;
+} else {
+    // If not a category, search for specific product match
+    let foundCategory = null;
+    let foundProductStr = null;
+    
+    Object.keys(productDatabase).forEach(cat => {
+        productDatabase[cat].forEach(p => {
+            if (p.toLowerCase() === query) {
+                foundCategory = cat;
+                foundProductStr = p;
+            }
+        });
+    });
+    
+    if (foundCategory) {
+        // Show exact matched product FIRST, then rest of its category
+        let catProducts = [...productDatabase[foundCategory]];
+        catProducts = catProducts.filter(p => p !== foundProductStr);
+        products = [foundProductStr, ...catProducts];
+    } else {
+        // Fallback: Partial matches across all products
+        Object.keys(productDatabase).forEach(cat => {
+            productDatabase[cat].forEach(p => {
+                if (p.toLowerCase().includes(query)) {
+                    products.push(p);
+                }
+            });
+        });
+    }
+}
+
+if (products.length === 0) {
+  html = "<h3 style='grid-column: 1 / -1; text-align: center; color: #8b6837; margin-top: 50px;'>No results found for your search.</h3>";
+} else {
+  for(let i=1; i<=products.length; i++){
+    html += `
+
+<div class="card"
+onclick="openProduct('${query}',${i}, '${products[i-1]}')">
+
+<img src="${productImages[products[i-1]] || 'images/' + query + '/' + i + '.jpg'}">
+
+<div class="info">
+
+<div class="rating">
+
+⭐ ${
+Math.random() < 0.8
+
+? (Math.random()*1 + 4).toFixed(1)
+
+: (Math.random()*0.9 + 3).toFixed(1)
+
+}
+
+</div>
+
+<h3>${products[i-1]}</h3>
+      <p>Shop Name: ${(window.shopData && shopData[query] && shopData[query][i-1]) ? shopData[query][i-1].shop : "Royal Rentals"}</p>
+<p>Location: ${(window.shopData && shopData[query] && shopData[query][i-1]) ? shopData[query][i-1].location : "Bangalore"}</p>
+    </div>
+  </div>
+  `;
+  }
+}
+
+document.getElementById("results").innerHTML = html;
+
+function openProduct(name, id, productName){
+  let imgUrl = productImages[productName] || "";
+
+  window.location.href = "product1.html?item=" + name + "&id=" + id + "&product=" + encodeURIComponent(productName) + "&img=" + encodeURIComponent(imgUrl);
+}
+</script>
+
+</body>
+</html>

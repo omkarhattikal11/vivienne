@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VIVIENNE - Admin Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#f5efe6;
+}
+
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 40px;
+background:white;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo{
+font-size:32px;
+font-weight:bold;
+color:#8b6837;
+cursor: pointer;
+}
+
+.right-nav{
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+.nav-btn{
+background:#9a7440;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* DASHBOARD LAYOUT */
+.dashboard{
+display: flex;
+min-height: calc(100vh - 80px);
+}
+
+.sidebar{
+width: 250px;
+background: white;
+padding: 20px 0;
+box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+}
+
+.sidebar-btn{
+width: 100%;
+padding: 15px 30px;
+text-align: left;
+background: transparent;
+border: none;
+font-size: 16px;
+font-weight: bold;
+color: #555;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.sidebar-btn:hover, .sidebar-btn.active{
+background: #f5efe6;
+color: #8b6837;
+border-left: 5px solid #8b6837;
+}
+
+.content-area{
+flex-grow: 1;
+padding: 40px;
+}
+
+.section{
+display: none;
+background: white;
+padding: 30px;
+border-radius: 15px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.section.active{
+display: block;
+}
+
+h2.section-title{
+color: #8b6837;
+margin-bottom: 25px;
+font-size: 28px;
+}
+
+/* STATS CARDS */
+.stats-grid{
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 20px;
+margin-bottom: 30px;
+}
+
+.stat-card{
+background: #ece7de;
+padding: 25px;
+border-radius: 12px;
+text-align: center;
+}
+
+.stat-card h3{
+font-size: 16px;
+color: #555;
+margin-bottom: 10px;
+}
+
+.stat-card p{
+font-size: 32px;
+font-weight: bold;
+color: #8b6837;
+}
+
+/* FORMS */
+.form-group{
+margin-bottom: 20px;
+}
+
+.form-group label{
+display: block;
+margin-bottom: 8px;
+font-weight: bold;
+color: #444;
+}
+
+.form-group input, .form-group select, .form-group textarea{
+width: 100%;
+padding: 12px 15px;
+border: 1px solid #ccc;
+border-radius: 8px;
+font-size: 16px;
+outline: none;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus{
+border-color: #8b6837;
+}
+
+.submit-btn{
+background: #8b6837;
+color: white;
+border: none;
+padding: 12px 25px;
+border-radius: 8px;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+}
+
+/* TABLES */
+.data-table{
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+}
+
+.data-table th, .data-table td{
+padding: 15px;
+text-align: left;
+border-bottom: 1px solid #eee;
+}
+
+.data-table th{
+background: #f9f9f9;
+color: #8b6837;
+}
+
+.action-btn{
+padding: 6px 12px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-weight: bold;
+}
+
+.delete-btn{
+background: #e74c3c;
+color: white;
+}
+
+.status-badge{
+padding: 5px 10px;
+border-radius: 15px;
+font-size: 12px;
+font-weight: bold;
+}
+
+.status-completed{ background: #d4edda; color: #155724; }
+.status-pending{ background: #fff3cd; color: #856404; }
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+<div class="logo" onclick="window.location.href='home.html'">
+VIVIENNE
+</div>
+<div class="right-nav">
+<h3>Admin Panel</h3>
+<button class="nav-btn" onclick="window.location.href='home.html'">
+Back to Store
+</button>
+</div>
+</div>
+
+<div class="dashboard">
+<div class="sidebar">
+<button class="sidebar-btn active" onclick="switchTab('dashboard', this)">Dashboard</button>
+<button class="sidebar-btn" onclick="switchTab('add-product', this)">Add Product</button>
+<button class="sidebar-btn" onclick="switchTab('manage-products', this)">Manage Products</button>
+<button class="sidebar-btn" onclick="switchTab('orders', this)">Order History</button>
+</div>
+
+<div class="content-area">
+
+<!-- DASHBOARD / ANALYTICS -->
+<div id="dashboard" class="section active">
+<h2 class="section-title">Overview & Analytics</h2>
+<div class="stats-grid">
+<div class="stat-card">
+<h3>Total Sales</h3>
+<p>₹4,52,000</p>
+</div>
+<div class="stat-card">
+<h3>Active Rentals</h3>
+<p>84</p>
+</div>
+<div class="stat-card">
+<h3>Total Products</h3>
+<p id="totalProductsCount">120</p>
+</div>
+<div class="stat-card">
+<h3>Total Users</h3>
+<p>342</p>
+</div>
+</div>
+</div>
+
+<!-- ADD PRODUCT -->
+<div id="add-product" class="section">
+<h2 class="section-title">Add New Product</h2>
+<form id="addProductForm" onsubmit="addProduct(event)">
+<div class="form-group">
+<label>Product Name</label>
+<input type="text" id="prodName" required placeholder="e.g. Royal Red Bridal Lehenga">
+</div>
+<div class="form-group">
+<label>Category</label>
+<select id="prodCat" required>
+<optgroup label="Women">
+    <option value="Ethnic Sarees">Ethnic Sarees</option>
+    <option value="Lehengas">Lehengas</option>
+    <option value="Dresses">Dresses</option>
+    <option value="Kurtis">Kurtis</option>
+    <option value="Western Party Dresses">Western Party Dresses</option>
+    <option value="Costumes">Costumes</option>
+    <option value="Jewellery">Jewellery</option>
+</optgroup>
+<optgroup label="Men">
+    <option value="Sherwani">Sherwani</option>
+    <option value="Kurta Pajama">Kurta Pajama</option>
+    <option value="Indo-Western Sets">Indo-Western Sets</option>
+    <option value="Formal & Party">Formal & Party</option>
+    <option value="Dance Costume Rental">Dance Costume Rental</option>
+    <option value="Fancy Dress Rental">Fancy Dress Rental</option>
+    <option value="Accessories Rental">Accessories Rental</option>
+</optgroup>
+<optgroup label="Kids">
+    <option value="Kids Lehenga">Kids Lehenga</option>
+    <option value="Mini Sherwani">Mini Sherwani</option>
+    <option value="Kids Kurta Sets">Kids Kurta Sets</option>
+    <option value="Kids Party Wear">Kids Party Wear</option>
+    <option value="Kids Fancy Dress">Kids Fancy Dress</option>
+    <option value="Kids Dance Costume">Kids Dance Costume</option>
+    <option value="Kids Accessories">Kids Accessories</option>
+</optgroup>
+</select>
+</div>
+<div class="form-group">
+<label>Price per Day/Hour (₹)</label>
+<input type="number" id="prodPrice" required placeholder="e.g. 1500">
+</div>
+<div class="form-group">
+<label>Image URL (Optional)</label>
+<input type="text" id="prodImage" placeholder="default: ethnic-sarees.png">
+</div>
+<button type="submit" class="submit-btn">Add Product</button>
+</form>
+</div>
+
+<!-- MANAGE PRODUCTS -->
+<div id="manage-products" class="section">
+<h2 class="section-title">Manage Products</h2>
+<table class="data-table">
+<thead>
+<tr>
+<th>Product Name</th>
+<th>Category</th>
+<th>Price (₹)</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="productList">
+<!-- Populated by JS -->
+</tbody>
+</table>
+</div>
+
+<!-- ORDERS -->
+<div id="orders" class="section">
+<h2 class="section-title">Recent Orders</h2>
+<table class="data-table">
+<thead>
+<tr>
+<th>Order ID</th>
+<th>Customer</th>
+<th>Item</th>
+<th>Amount</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#ORD-9021</td>
+<td>Rahul Sharma</td>
+<td>Designer Tuxedo</td>
+<td>₹2500</td>
+<td><span class="status-badge status-completed">Completed</span></td>
+</tr>
+<tr>
+<td>#ORD-9022</td>
+<td>Priya Patel</td>
+<td>Bridal Lehenga</td>
+<td>₹8000</td>
+<td><span class="status-badge status-pending">Pending</span></td>
+</tr>
+<tr>
+<td>#ORD-9023</td>
+<td>Anita Reddy</td>
+<td>Grand Wedding Hall</td>
+<td>₹45000</td>
+<td><span class="status-badge status-completed">Completed</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</div>
+
+<script>
+// ROLE SECURITY CHECK
+if(localStorage.getItem('role') !== 'seller') {
+    alert("Unauthorized Access. Only sellers can view this page.");
+    window.location.href = "home.html";
+}
+
+function switchTab(tabId, btn) {
+// Update sidebar active state
+document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+
+// Update content sections
+document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+document.getElementById(tabId).classList.add('active');
+
+if(tabId === 'orders') fetchOrders();
+}
+
+async function fetchProducts() {
+    try {
+        const res = await fetch('http://127.0.0.1:5500/api/products');
+        const data = await res.json();
+        if(data.success) {
+            renderProducts(data.products);
+        }
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+function renderProducts(products) {
+const list = document.getElementById('productList');
+list.innerHTML = '';
+products.forEach(p => {
+list.innerHTML += `
+<tr>
+<td>${p.name}</td>
+<td>${p.category}</td>
+<td>₹${p.price}</td>
+<td><button class="action-btn delete-btn" onclick="removeProduct(${p.id})">Remove</button></td>
+</tr>
+`;
+});
+document.getElementById('totalProductsCount').innerText = products.length + 117; // additive for effect
+}
+
+async function addProduct(e) {
+e.preventDefault();
+const name = document.getElementById('prodName').value;
+const category = document.getElementById('prodCat').options[document.getElementById('prodCat').selectedIndex].text;
+const price = document.getElementById('prodPrice').value;
+const image_url = document.getElementById('prodImage').value;
+
+try {
+    const res = await fetch('http://127.0.0.1:5500/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, category, price, image_url })
+    });
+    const data = await res.json();
+    if(data.success) {
+        alert('Product Added Successfully!');
+        document.getElementById('addProductForm').reset();
+        switchTab('manage-products', document.querySelectorAll('.sidebar-btn')[2]);
+        fetchProducts();
+    } else {
+        alert(data.message);
+    }
+} catch(e) {
+    console.error(e);
+}
+}
+
+async function removeProduct(id) {
+if(confirm('Are you sure you want to remove this product?')) {
+    try {
+        const res = await fetch('http://127.0.0.1:5500/api/products/' + id, { method: 'DELETE' });
+        const data = await res.json();
+        if(data.success) {
+            fetchProducts();
+        }
+    } catch(e) {
+        console.error(e);
+    }
+}
+}
+
+async function fetchOrders() {
+    try {
+        let sellerName = localStorage.getItem('name') || '';
+        const res = await fetch('http://127.0.0.1:5500/api/orders?seller_name=' + encodeURIComponent(sellerName));
+        const data = await res.json();
+        if(data.success) {
+            const tbody = document.querySelector('#orders tbody');
+            tbody.innerHTML = '';
+            data.orders.forEach(o => {
+                const badgeClass = o.status.toLowerCase() === 'completed' ? 'status-completed' : 'status-pending';
+                const shortId = o._id ? o._id.substring(o._id.length - 4) : "0000";
+                tbody.innerHTML += `
+                <tr>
+                <td>#ORD-90${shortId}</td>
+                <td>${o.customer_name}</td>
+                <td>${o.item_name}</td>
+                <td>₹${o.amount}</td>
+                <td><span class="status-badge ${badgeClass}">${o.status}</span></td>
+                </tr>
+                `;
+            });
+        }
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+// Initial render
+fetchProducts();
+fetchOrders();
+
+</script>
+</body>
+</html>
