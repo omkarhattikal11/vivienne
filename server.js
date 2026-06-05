@@ -17,7 +17,8 @@ app.use(express.json());
    MONGOOSE CONNECTION
 ========================= */
 
-mongoose.connect("mongodb://127.0.0.1:27017/vivienne").then(() => {
+const mongoURI = process.env.MONGODB_URI || "mongodb+srv://vivienneadmin:Vivienne123@cluster0.xujkmpg.mongodb.net/vivienne?retryWrites=true&w=majority";
+mongoose.connect(mongoURI).then(() => {
     console.log("✅ MongoDB Connected");
 }).catch((err) => {
     console.log("❌ MongoDB Connection Failed");
@@ -250,7 +251,7 @@ app.use((req, res, next) => {
    START SERVER
 ========================= */
 
-const PORT = 5500;
+const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });
