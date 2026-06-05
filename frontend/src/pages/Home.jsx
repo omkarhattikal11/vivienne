@@ -1,6 +1,31 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
+import { productsData } from '../data/productsData';
+
+const subcategoryProducts = {
+  "Ethnic Sarees": ["Kanjeevaram Saree", "Banarasi Silk Saree", "Pre-Stitched Saree", "Cotton Saree", "Bridal Red Saree"],
+  "Lehengas": ["Mirror Work Lehenga", "Floral Embroidery Lehenga", "Royal Bridal Lehenga", "Indo-Western Lehenga", "Glitter Lehenga"],
+  "Dresses": ["Indo-Western Anarkali", "Slit Anarkali", "Gown Style Anarkali", "Mirror Work Sharara", "Jacket Style Sharara"],
+  "Kurtis": ["Embroidered Kurti", "Straight Kurti", "Jacket Kurti", "Palazzo Kurti Set", "Cotton Kurti"],
+  "Western Party Dresses": ["Layered Gown", "Satin Gown", "Mermaid Gown", "Off-Shoulder Gown", "Mini Dress", "Bodycon Dress", "Corset Dress", "Crystal Dress", "Disco Party Dress"],
+  "Costumes": ["Traditional Bharatanatyam Dress", "Anarkali Style Kathak Dress", "Retro Bollywood Outfit", "Arabian Belly Dance Dress", "Maharani Costume", "Disney Princess Inspired"],
+  "Jewellery": ["Bridal Jewelry", "Temple Jewelry", "Choker", "Maang Tikka", "Hair Accessories"],
+  "Sherwani": ["Royal Wedding Sherwani", "Embroidered Sherwani", "Velvet Sherwani", "Golden Work Sherwani", "Indo-Western Sherwani", "Jacket Style Sherwani"],
+  "Kurta Pajama": ["Cotton Kurta Pajama", "Silk Kurta Pajama", "Embroidered Kurta", "Diwali Kurta Set", "Eid Kurta Collection", "Jacket Kurta Set"],
+  "Indo-Western Sets": ["Indo-Western Jacket Set", "Draped Indo-Western Outfit", "Layered Fusion Wear", "Groom Fusion Outfit", "Reception Indo-Western"],
+  "Formal & Party": ["Satin Lapel Tuxedo", "Designer Tuxedo", "Groom Tuxedo", "Cocktail Party Tuxedo", "Reception Blazer", "Indo-Western Blazer"],
+  "Dance Costume Rental": ["LED Dance Costume", "Crew Dance Uniform", "Retro Hero Costume", "Bhangra Costume", "Garba Outfit", "Rajasthani Folk Costume", "Punjabi Dance Outfit"],
+  "Fancy Dress Rental": ["King Costume", "Superhero Costume", "Historical Characters", "Police/Army Costume", "Movie Character Costumes"],
+  "Accessories Rental": ["Satin Tie", "Printed Tie", "Velvet Bow Tie", "Wedding Bow Tie", "Groom Turban", "Traditional Pagdi"],
+  "Kids Lehenga": ["Silk Kids Lehenga", "Embroidered Lehenga", "Floral Lehenga", "Glitter Lehenga", "Princess Style Lehenga"],
+  "Mini Sherwani": ["Royal Sherwani", "Velvet Sherwani", "Indo-Western Sherwani", "Reception Sherwani", "Jacket Style Sherwani"],
+  "Kids Kurta Sets": ["Cotton Kurta Pajama", "Silk Kurta Set", "Diwali Kurta Set", "Eid Kurta Collection", "Jacket Kurta Set"],
+  "Kids Party Wear": ["Cinderella Gown", "Barbie Princess Dress", "Party Blazer Set", "Bow Tie Outfit"],
+  "Kids Fancy Dress": ["Freedom Fighter", "Professional Costume", "Animal Costumes", "Cartoon Character"],
+  "Kids Dance Costume": ["Group Dance Costume", "LED Dance Costume", "Traditional Bharatanatyam Dress", "Freestyle Dance Costume", "Retro Theme"],
+  "Kids Accessories": ["Princess Crown", "Fairy Wings", "Butterfly Wings", "Magic Stick", "Hats"]
+};
 
 export default function Home() {
   const { loggedIn, name } = useContext(AppContext);
@@ -109,6 +134,10 @@ export default function Home() {
   const getFlickrUrl = (text) => {
     let keywords = text.toLowerCase().replace(/[^a-z0-9]+/g, ',');
     return `https://loremflickr.com/400/500/${keywords},event`;
+  };
+
+  const getProductImage = (itemName, categoryName) => {
+    return productsData[itemName]?.bestImages?.[0] || categoryImages[categoryName] || getFlickrUrl(itemName);
   };
 
   // Reset states when switching tabs
@@ -230,157 +259,14 @@ export default function Home() {
         <div>
           <h2 className="heading">⚡ Porting {activeCategory} Options</h2>
           <div className="subcategory-scroll">
-            {activeMenu === 'products' && (
-              // Hardcoded product options based on typeData maps in Vanilla JS
-              activeCategory === "Ethnic Sarees" && ["Kanjeevaram Saree", "Banarasi Silk Saree", "Pre-Stitched Saree", "Cotton Saree", "Bridal Red Saree"].map((item, idx) => (
+            {activeMenu === 'products' && subcategoryProducts[activeCategory] && (
+              subcategoryProducts[activeCategory].map((item, idx) => (
                 <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                  <img src={categoryImages["Ethnic Sarees"]} alt={item} />
+                  <img src={getProductImage(item, activeCategory)} alt={item} />
                   <h4>{item}</h4>
                 </div>
               ))
             )}
-            
-            {activeMenu === 'products' && activeCategory === "Lehengas" && ["Mirror Work Lehenga", "Floral Embroidery Lehenga", "Royal Bridal Lehenga", "Indo-Western Lehenga", "Glitter Lehenga"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Lehengas"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Dresses" && ["Indo-Western Anarkali", "Slit Anarkali", "Gown Style Anarkali", "Mirror Work Sharara", "Jacket Style Sharara"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Dresses"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Kurtis" && ["Embroidered Kurti", "Straight Kurti", "Jacket Kurti", "Palazzo Kurti Set", "Cotton Kurti"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Kurtis"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Western Party Dresses" && ["Layered Gown", "Satin Gown", "Mermaid Gown", "Off-Shoulder Gown", "Mini Dress", "Bodycon Dress", "Corset Dress", "Crystal Dress", "Disco Party Dress"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Western Party Dresses"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Costumes" && ["Traditional Bharatanatyam Dress", "Anarkali Style Kathak Dress", "Retro Bollywood Outfit", "Arabian Belly Dance Dress", "Maharani Costume", "Disney Princess Inspired"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Costumes"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Jewellery" && ["Bridal Jewelry", "Temple Jewelry", "Choker", "Maang Tikka", "Hair Accessories"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Jewellery"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {/* MEN PRODUCTS */}
-            {activeMenu === 'products' && activeCategory === "Sherwani" && ["Royal Wedding Sherwani", "Embroidered Sherwani", "Velvet Sherwani", "Golden Work Sherwani", "Indo-Western Sherwani", "Jacket Style Sherwani"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Sherwani"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Kurta Pajama" && ["Cotton Kurta Pajama", "Silk Kurta Pajama", "Embroidered Kurta", "Diwali Kurta Set", "Eid Kurta Collection", "Jacket Kurta Set"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Kurta Pajama"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Indo-Western Sets" && ["Indo-Western Jacket Set", "Draped Indo-Western Outfit", "Layered Fusion Wear", "Groom Fusion Outfit", "Reception Indo-Western"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Indo-Western Sets"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Formal & Party" && ["Satin Lapel Tuxedo", "Designer Tuxedo", "Groom Tuxedo", "Cocktail Party Tuxedo", "Reception Blazer", "Indo-Western Blazer"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Formal & Party"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Dance Costume Rental" && ["LED Dance Costume", "Crew Dance Uniform", "Retro Hero Costume", "Bhangra Costume", "Garba Outfit", "Rajasthani Folk Costume", "Punjabi Dance Outfit"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Dance Costume Rental"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Fancy Dress Rental" && ["King Costume", "Superhero Costume", "Historical Characters", "Police/Army Costume", "Movie Character Costumes"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Fancy Dress Rental"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Accessories Rental" && ["Satin Tie", "Printed Tie", "Velvet Bow Tie", "Wedding Bow Tie", "Groom Turban", "Traditional Pagdi"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Accessories Rental"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {/* KIDS PRODUCTS */}
-            {activeMenu === 'products' && activeCategory === "Kids Lehenga" && ["Silk Kids Lehenga", "Embroidered Lehenga", "Floral Lehenga", "Glitter Lehenga", "Princess Style Lehenga"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Kids Lehenga"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Mini Sherwani" && ["Royal Sherwani", "Velvet Sherwani", "Indo-Western Sherwani", "Reception Sherwani", "Jacket Style Sherwani"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Mini Sherwani"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Kids Kurta Sets" && ["Cotton Kurta Pajama", "Silk Kurta Set", "Diwali Kurta Set", "Eid Kurta Collection", "Jacket Kurta Set"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Kids Kurta Sets"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Kids Party Wear" && ["Cinderella Gown", "Barbie Princess Dress", "Party Blazer Set", "Bow Tie Outfit"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Kids Party Wear"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Kids Fancy Dress" && ["Freedom Fighter", "Professional Costume", "Animal Costumes", "Cartoon Character"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Kids Fancy Dress"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Kids Dance Costume" && ["Group Dance Costume", "LED Dance Costume", "Traditional Bharatanatyam Dress", "Freestyle Dance Costume", "Retro Theme"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Kids Dance Costume"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
-
-            {activeMenu === 'products' && activeCategory === "Kids Accessories" && ["Princess Crown", "Fairy Wings", "Butterfly Wings", "Magic Stick", "Hats"].map((item, idx) => (
-              <div key={idx} className="sub-card" onClick={() => openItemPage('product', item)}>
-                <img src={categoryImages["Kids Accessories"]} alt={item} />
-                <h4>{item}</h4>
-              </div>
-            ))}
 
             {/* SERVICES IN HOME */}
             {activeMenu === 'services' && serviceData[activeCategory] && (
