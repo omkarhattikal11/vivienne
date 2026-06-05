@@ -62,13 +62,6 @@ const Admin = mongoose.model("Admin", adminSchema);
 const Product = mongoose.model("Product", productSchema);
 const Order = mongoose.model("Order", orderSchema);
 
-/* =========================
-   TEST ROUTE
-========================= */
-
-app.get("/", (req, res) => {
-    res.send("🚀 Backend Running Successfully");
-});
 
 /* =========================
    REGISTER API
@@ -240,7 +233,7 @@ app.post("/api/orders", async (req, res) => {
 app.use(express.static(path.join(__dirname, "frontend/dist")));
 
 app.use((req, res, next) => {
-    if (!req.url.startsWith("/api") && req.url !== "/login" && req.url !== "/register") {
+    if (req.method === "GET" && !req.url.startsWith("/api")) {
         res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
     } else {
         next();
