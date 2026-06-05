@@ -6,9 +6,13 @@ const getApiBaseUrl = () => {
     if (hostname === "localhost" || hostname === "127.0.0.1") {
       return "http://127.0.0.1:5500";
     }
+    // If hosted on Render (same domain as backend), use relative paths
+    if (hostname.includes("onrender.com")) {
+      return "";
+    }
   }
-  // Fallback to local server or environment variable for production cloud deployment
-  // You can set VITE_API_URL in Vercel settings to your live Render/Railway backend URL!
+  // If hosted on Vercel, it uses VITE_API_URL environment variable.
+  // You can set VITE_API_URL in your Vercel project settings.
   return import.meta.env.VITE_API_URL || "http://127.0.0.1:5500";
 };
 
